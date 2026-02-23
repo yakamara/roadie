@@ -1,0 +1,12 @@
+{
+    "require": {
+        "hill-valley/fluxcap": "^1.0@dev",
+        "league/html-to-markdown": "^5.1",
+        "symfony/uid": "^7.2"
+    },
+    "autoload": {
+        "psr-4": {
+            "Yakamara\\Roadie\\": "lib"
+        }
+    }
+}

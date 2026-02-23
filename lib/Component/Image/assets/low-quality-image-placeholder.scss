@@ -1,0 +1,7 @@
+img[data-lqip] {
+    transition: filter 0.4s ease;
+    filter: blur(10px);
+}
+img[data-lqip][data-loaded="true"] {
+    filter: blur(0);
+}

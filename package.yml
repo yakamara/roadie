@@ -1,0 +1,7 @@
+package: roadie
+version: 1.0.0-dev
+
+requires:
+    redaxo: '>=5.20'
+    php:
+        version: '>=8.3'
