@@ -3,6 +3,7 @@
 namespace Yakamara\Roadie\Component\FormatBytes;
 
 use Yakamara\Roadie\Component\Component;
+use Yakamara\Roadie\Component\HtmlAttribute\Lang;
 use Yakamara\Roadie\Component\HtmlAttributes;
 
 /**
@@ -34,7 +35,7 @@ final class FormatBytes extends Component
         /**
          * The locale to use for formatting. Defaults to the browser's locale.
          */
-        public ?string $lang = null,
+        public ?Lang $lang = null,
 
         public HtmlAttributes $attributes = new HtmlAttributes(),
     ) {}

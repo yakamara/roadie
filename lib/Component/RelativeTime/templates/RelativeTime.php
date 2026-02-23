@@ -12,4 +12,5 @@ use Yakamara\Roadie\Component\RelativeTime\RelativeTimeNumeric;
     'format' => $this->format !== RelativeTimeFormat::Long ? $this->format : null,
     'numeric' => $this->numeric !== RelativeTimeNumeric::Auto ? $this->numeric : null,
     'sync' => $this->sync,
+    'lang' => $this->lang,
 ])->toString() ?>></wa-relative-time>

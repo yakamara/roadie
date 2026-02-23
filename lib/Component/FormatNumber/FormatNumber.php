@@ -3,6 +3,7 @@
 namespace Yakamara\Roadie\Component\FormatNumber;
 
 use Yakamara\Roadie\Component\Component;
+use Yakamara\Roadie\Component\HtmlAttribute\Lang;
 use Yakamara\Roadie\Component\HtmlAttributes;
 
 /**
@@ -65,6 +66,11 @@ final class FormatNumber extends Component
          * Turns off grouping separators (e.g. thousands separator).
          */
         public bool $withoutGrouping = false,
+
+        /**
+         * The locale to use for formatting. Defaults to the browser's locale.
+         */
+        public ?Lang $lang = null,
 
         public HtmlAttributes $attributes = new HtmlAttributes(),
     ) {}

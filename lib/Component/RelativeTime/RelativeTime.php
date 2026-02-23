@@ -3,6 +3,7 @@
 namespace Yakamara\Roadie\Component\RelativeTime;
 
 use Yakamara\Roadie\Component\Component;
+use Yakamara\Roadie\Component\HtmlAttribute\Lang;
 use Yakamara\Roadie\Component\HtmlAttributes;
 
 /**
@@ -37,6 +38,11 @@ final class RelativeTime extends Component
          * Keep the displayed value up to date as time passes.
          */
         public bool $sync = false,
+
+        /**
+         * The locale to use for formatting. Defaults to the browser's locale.
+         */
+        public ?Lang $lang = null,
 
         public HtmlAttributes $attributes = new HtmlAttributes(),
     ) {}

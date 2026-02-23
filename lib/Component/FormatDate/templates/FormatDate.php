@@ -19,4 +19,5 @@ use Yakamara\Roadie\Component\FormatDate\FormatDateHourFormat;
     'hour-format' => $this->hourFormat !== FormatDateHourFormat::Auto ? $this->hourFormat : null,
     'time-zone' => $this->timeZone,
     'time-zone-name' => $this->timeZoneName,
+    'lang' => $this->lang,
 ])->toString() ?>></wa-format-date>

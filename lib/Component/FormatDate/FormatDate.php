@@ -3,6 +3,7 @@
 namespace Yakamara\Roadie\Component\FormatDate;
 
 use Yakamara\Roadie\Component\Component;
+use Yakamara\Roadie\Component\HtmlAttribute\Lang;
 use Yakamara\Roadie\Component\HtmlAttributes;
 
 /**
@@ -75,6 +76,11 @@ final class FormatDate extends Component
          * The format for displaying the time zone name.
          */
         public ?FormatDateTimeZoneName $timeZoneName = null,
+
+        /**
+         * The locale to use for formatting. Defaults to the browser's locale.
+         */
+        public ?Lang $lang = null,
 
         public HtmlAttributes $attributes = new HtmlAttributes(),
     ) {}

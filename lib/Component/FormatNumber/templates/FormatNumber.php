@@ -18,4 +18,5 @@ use Yakamara\Roadie\Component\FormatNumber\FormatNumberType;
     'minimum-significant-digits' => $this->minimumSignificantDigits,
     'maximum-significant-digits' => $this->maximumSignificantDigits,
     'without-grouping' => $this->withoutGrouping,
+    'lang' => $this->lang,
 ])->toString() ?>></wa-format-number>
