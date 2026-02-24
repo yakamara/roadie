@@ -63,7 +63,7 @@ final class Button extends Component
         /**
          * The button's theme variant.
          */
-        public ButtonVariant $variant = ButtonVariant::Default,
+        public ButtonVariant $variant = ButtonVariant::Brand,
 
         /**
          * The button's size.

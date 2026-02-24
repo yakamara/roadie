@@ -4,9 +4,9 @@ namespace Yakamara\Roadie\Component\Button;
 
 enum ButtonVariant: string
 {
+    case Brand = 'brand';
+    case Danger = 'danger';
     case Neutral = 'neutral';
-    case Primary = 'brand';
     case Success = 'success';
     case Warning = 'warning';
-    case Danger = 'danger';
 }
