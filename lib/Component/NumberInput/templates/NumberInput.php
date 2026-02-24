@@ -13,8 +13,8 @@ use Yakamara\Roadie\Component\NumberInput\NumberInputSize;
     'value' => $this->value,
     'default-value' => $this->defaultValue,
     'placeholder' => $this->placeholder ?: null,
-    'size' => $this->size !== NumberInputSize::Medium ? $this->size : null,
-    'appearance' => $this->appearance !== NumberInputAppearance::Outlined ? $this->appearance : null,
+    'size' => NumberInputSize::Medium !== $this->size ? $this->size : null,
+    'appearance' => NumberInputAppearance::Outlined !== $this->appearance ? $this->appearance : null,
     'name' => $this->name,
     'min' => $this->min,
     'max' => $this->max,
@@ -29,8 +29,8 @@ use Yakamara\Roadie\Component\NumberInput\NumberInputSize;
     'enterkeyhint' => $this->enterkeyhint,
     'inputmode' => $this->inputmode,
     'hint' => $this->hint ?: null,
-    'with-label' => $this->label !== null,
-    'with-hint' => $this->hint !== null,
+    'with-label' => null !== $this->label,
+    'with-hint' => null !== $this->hint,
 ])->toString() ?>>
     <?= $this->label instanceof Component ? Component::slot($this->label, 'label') : '' ?>
     <?= $this->hint instanceof Component ? Component::slot($this->hint, 'hint') : '' ?>

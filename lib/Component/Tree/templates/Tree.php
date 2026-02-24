@@ -8,7 +8,7 @@ use Yakamara\Roadie\Component\Tree\TreeSelection;
 ?>
 
 <wa-tree <?= $this->attributes->with([
-    'selection' => $this->selection !== TreeSelection::Single ? $this->selection : null,
+    'selection' => TreeSelection::Single !== $this->selection ? $this->selection : null,
 ])->toString() ?>>
     <?= Component::slot($this->expandIcon, 'expand-icon') ?>
     <?= Component::slot($this->collapseIcon, 'collapse-icon') ?>

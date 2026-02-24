@@ -14,24 +14,24 @@ final class FileTypeDetector
         'image' => ['avif', 'bmp', 'gif', 'jpeg', 'jpg', 'png', 'webp'],
         'audio' => ['aac', 'flac', 'mp3', 'ogg', 'wav', 'webm'],
         'video' => ['avi', 'mov', 'mp4', 'mpeg', 'ogg', 'webm'],
-        'svg'   => ['svg']
+        'svg' => ['svg'],
     ];
 
     private const array MIME_TYPES = [
         'image' => ['image/avif', 'image/bmp', 'image/gif', 'image/jpeg', 'image/png', 'image/webp'],
         'audio' => ['audio/aac', 'audio/flac', 'audio/mpeg', 'audio/ogg', 'audio/wav', 'audio/webm'],
         'video' => ['video/avi', 'video/quicktime', 'video/mp4', 'video/mpeg', 'video/ogg', 'video/webm'],
-        'svg'   => ['image/svg+xml']
+        'svg' => ['image/svg+xml'],
     ];
 
     public function __construct(
-        public string $filePath
+        public string $filePath,
     ) {
         if ($this->filePath === basename($this->filePath)) {
             $this->filePath = rex_path::media($this->filePath);
         }
         if (!is_file($this->filePath) || !is_readable($this->filePath)) {
-            throw new InvalidArgumentException('File does not exist or is not readable: '.$this->filePath);
+            throw new InvalidArgumentException('File does not exist or is not readable: ' . $this->filePath);
         }
     }
 

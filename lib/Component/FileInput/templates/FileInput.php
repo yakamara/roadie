@@ -12,10 +12,10 @@ use Yakamara\Roadie\Component\FileInput\FileInputSize;
     'accept' => $this->accept,
     'multiple' => $this->multiple,
     'required' => $this->required,
-    'size' => $this->size !== FileInputSize::Medium ? $this->size : null,
+    'size' => FileInputSize::Medium !== $this->size ? $this->size : null,
     'hint' => $this->hint ?: null,
-    'with-label' => $this->label !== null,
-    'with-hint' => $this->hint !== null,
+    'with-label' => null !== $this->label,
+    'with-hint' => null !== $this->hint,
 ])->toString() ?>>
     <?= $this->label instanceof Component ? Component::slot($this->label, 'label') : '' ?>
     <?= $this->hint instanceof Component ? Component::slot($this->hint, 'hint') : '' ?>

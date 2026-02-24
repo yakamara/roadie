@@ -9,11 +9,11 @@ use Yakamara\Roadie\Component\Dropdown\DropdownSize;
 ?>
 
 <wa-dropdown <?= $this->attributes->with([
-    'placement' => $this->placement !== DropdownPlacement::BottomStart ? $this->placement : null,
-    'size' => $this->size !== DropdownSize::Medium ? $this->size : null,
+    'placement' => DropdownPlacement::BottomStart !== $this->placement ? $this->placement : null,
+    'size' => DropdownSize::Medium !== $this->size ? $this->size : null,
     'open' => $this->open,
-    'distance' => $this->distance !== 0 ? $this->distance : null,
-    'skidding' => $this->skidding !== 0 ? $this->skidding : null,
+    'distance' => 0 !== $this->distance ? $this->distance : null,
+    'skidding' => 0 !== $this->skidding ? $this->skidding : null,
 ])->toString() ?>>
     <?= Component::slot($this->trigger, 'trigger') ?>
     <?php foreach ($this->items as $item): ?>

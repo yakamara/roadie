@@ -7,5 +7,5 @@ use Yakamara\Roadie\Component\Divider\DividerOrientation;
 ?>
 
 <wa-divider <?= $this->attributes->with([
-    'orientation' => $this->orientation !== DividerOrientation::Horizontal ? $this->orientation : null,
+    'orientation' => DividerOrientation::Horizontal !== $this->orientation ? $this->orientation : null,
 ])->toString() ?>></wa-divider>

@@ -7,6 +7,8 @@ use rex;
 use rex_file;
 use rex_path;
 
+use const PATHINFO_EXTENSION;
+
 final class Asset
 {
     public static function url(string $fileName): string
@@ -19,7 +21,7 @@ final class Asset
         $scriptTags = [];
         $assets = self::resolver($directory)->getEntrypointFiles($entrypoint);
         foreach ($assets['js'] as $jsFile) {
-            $scriptTags[] = '<script src="'.rex_escape($jsFile).'" defer></script>';
+            $scriptTags[] = '<script src="' . rex_escape($jsFile) . '" defer></script>';
         }
         return implode("\n", $scriptTags);
     }
@@ -29,7 +31,7 @@ final class Asset
         $linkTags = [];
         $assets = self::resolver($directory)->getEntrypointFiles($entrypoint);
         foreach ($assets['css'] as $cssFile) {
-            $linkTags[] = '<link rel="stylesheet" href="'.rex_escape($cssFile).'">';
+            $linkTags[] = '<link rel="stylesheet" href="' . rex_escape($cssFile) . '">';
         }
         return implode("\n", $linkTags);
     }
@@ -38,7 +40,7 @@ final class Asset
     {
         $url = self::resolver()->getAssetUrl($fileName);
         $ext = strtolower(pathinfo($url, PATHINFO_EXTENSION));
-        return '<link rel="preload" href="'.rex_escape($url).'" as="font" type="font/'.$ext.'" crossorigin="anonymous">';
+        return '<link rel="preload" href="' . rex_escape($url) . '" as="font" type="font/' . $ext . '" crossorigin="anonymous">';
     }
 
     /*
@@ -66,8 +68,8 @@ final class Asset
             return '';
         }
 
-        $a11yAttrs = $label !== null
-            ? 'role="img" aria-label="'.rex_escape($label).'"'
+        $a11yAttrs = null !== $label
+            ? 'role="img" aria-label="' . rex_escape($label) . '"'
             : 'aria-hidden="true"';
 
         return (string) preg_replace_callback(
@@ -106,11 +108,11 @@ final class Asset
     {
         $cleanId = ltrim(str_replace(['.svg', 'icon-'], '', $symbolId), '/');
 
-        $svgAttrs = $label !== null
-            ? 'role="img" aria-label="'.rex_escape($label).'"'
+        $svgAttrs = null !== $label
+            ? 'role="img" aria-label="' . rex_escape($label) . '"'
             : 'aria-hidden="true"';
 
-        return '<svg class="icon" '.$svgAttrs.' focusable="false"><use href="#svg-'.rex_escape($cleanId).'"></use></svg>';
+        return '<svg class="icon" ' . $svgAttrs . ' focusable="false"><use href="#svg-' . rex_escape($cleanId) . '"></use></svg>';
     }
 
     private static function resolver(?string $directory = null): AssetResolver

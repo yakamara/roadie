@@ -8,7 +8,7 @@ use Yakamara\Roadie\Component\Scroller\ScrollerOrientation;
 ?>
 
 <wa-scroller <?= $this->attributes->with([
-    'orientation' => $this->orientation !== ScrollerOrientation::Horizontal ? $this->orientation : null,
+    'orientation' => ScrollerOrientation::Horizontal !== $this->orientation ? $this->orientation : null,
     'without-scrollbar' => $this->withoutScrollbar,
     'without-shadow' => $this->withoutShadow,
 ])->toString() ?>>

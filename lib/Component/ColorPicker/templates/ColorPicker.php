@@ -13,8 +13,8 @@ use Yakamara\Roadie\Component\Component;
     'value' => $this->value,
     'default-value' => $this->defaultValue,
     'name' => $this->name,
-    'format' => $this->format !== ColorPickerFormat::Hex ? $this->format : null,
-    'size' => $this->size !== ColorPickerSize::Medium ? $this->size : null,
+    'format' => ColorPickerFormat::Hex !== $this->format ? $this->format : null,
+    'size' => ColorPickerSize::Medium !== $this->size ? $this->size : null,
     'opacity' => $this->opacity,
     'open' => $this->open,
     'disabled' => $this->disabled,
@@ -23,8 +23,8 @@ use Yakamara\Roadie\Component\Component;
     'without-format-toggle' => $this->withoutFormatToggle,
     'swatches' => $this->swatches,
     'hint' => $this->hint ?: null,
-    'with-label' => $this->label !== null,
-    'with-hint' => $this->hint !== null,
+    'with-label' => null !== $this->label,
+    'with-hint' => null !== $this->hint,
 ])->toString() ?>>
     <?= $this->label instanceof Component ? Component::slot($this->label, 'label') : '' ?>
     <?= $this->hint instanceof Component ? Component::slot($this->hint, 'hint') : '' ?>

@@ -1,9 +1,10 @@
 <?php
 
-//use Yakamara\Roadie\Component\Image\LowQualityImagePlaceholder;
+// use Yakamara\Roadie\Component\Image\LowQualityImagePlaceholder;
 use Yakamara\Roadie\Component\Template;
-//use Yakamara\Roadie\View\Notification;
-//use Yakamara\Roadie\View\Section;
+
+// use Yakamara\Roadie\View\Notification;
+// use Yakamara\Roadie\View\Section;
 
 $addon = rex_addon::get('roadie');
 

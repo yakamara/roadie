@@ -8,12 +8,12 @@ use Yakamara\Roadie\Component\SplitPanel\SplitPanelOrientation;
 ?>
 
 <wa-split-panel <?= $this->attributes->with([
-    'position' => $this->position !== 50 ? $this->position : null,
+    'position' => 50 !== $this->position ? $this->position : null,
     'position-in-pixels' => $this->positionInPixels,
-    'orientation' => $this->orientation !== SplitPanelOrientation::Horizontal ? $this->orientation : null,
+    'orientation' => SplitPanelOrientation::Horizontal !== $this->orientation ? $this->orientation : null,
     'primary' => $this->primary,
     'snap' => $this->snap,
-    'snap-threshold' => $this->snapThreshold !== 12 ? $this->snapThreshold : null,
+    'snap-threshold' => 12 !== $this->snapThreshold ? $this->snapThreshold : null,
     'disabled' => $this->disabled,
 ])->toString() ?>>
     <?= Component::slot($this->start, 'start') ?>

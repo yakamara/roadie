@@ -10,7 +10,7 @@ use Yakamara\Roadie\Component\Sparkline\SparklineCurve;
 <wa-sparkline <?= $this->attributes->with([
     'data' => $this->data,
     'label' => $this->label,
-    'appearance' => $this->appearance !== SparklineAppearance::Solid ? $this->appearance : null,
-    'curve' => $this->curve !== SparklineCurve::Linear ? $this->curve : null,
+    'appearance' => SparklineAppearance::Solid !== $this->appearance ? $this->appearance : null,
+    'curve' => SparklineCurve::Linear !== $this->curve ? $this->curve : null,
     'trend' => $this->trend,
 ])->toString() ?>></wa-sparkline>

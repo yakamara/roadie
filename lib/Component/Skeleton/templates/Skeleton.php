@@ -7,5 +7,5 @@ use Yakamara\Roadie\Component\Skeleton\SkeletonEffect;
 ?>
 
 <wa-skeleton <?= $this->attributes->with([
-    'effect' => $this->effect !== SkeletonEffect::None ? $this->effect : null,
+    'effect' => SkeletonEffect::None !== $this->effect ? $this->effect : null,
 ])->toString() ?>></wa-skeleton>

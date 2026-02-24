@@ -10,10 +10,10 @@ use Yakamara\Roadie\Component\Details\DetailsIconPlacement;
 
 <wa-details <?= $this->attributes->with([
     'summary' => $this->summary,
-    'appearance' => $this->appearance !== DetailsAppearance::Outlined ? $this->appearance : null,
+    'appearance' => DetailsAppearance::Outlined !== $this->appearance ? $this->appearance : null,
     'open' => $this->open,
     'disabled' => $this->disabled,
-    'icon-placement' => $this->iconPlacement !== DetailsIconPlacement::End ? $this->iconPlacement : null,
+    'icon-placement' => DetailsIconPlacement::End !== $this->iconPlacement ? $this->iconPlacement : null,
     'name' => $this->name,
 ])->toString() ?>>
     <?= Component::slot($this->summarySlot, 'summary') ?>

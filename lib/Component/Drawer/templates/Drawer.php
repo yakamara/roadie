@@ -9,7 +9,7 @@ use Yakamara\Roadie\Component\Drawer\DrawerPlacement;
 
 <wa-drawer <?= $this->attributes->with([
     'label' => $this->label ?: null,
-    'placement' => $this->placement !== DrawerPlacement::End ? $this->placement : null,
+    'placement' => DrawerPlacement::End !== $this->placement ? $this->placement : null,
     'open' => $this->open,
     'light-dismiss' => $this->lightDismiss,
     'without-header' => $this->withoutHeader,

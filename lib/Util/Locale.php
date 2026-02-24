@@ -5,6 +5,10 @@ namespace Yakamara\Roadie\Util;
 use http\Exception\InvalidArgumentException;
 use rex_clang;
 
+use function is_string;
+
+use const LC_ALL;
+
 class Locale
 {
     public static function setDefault(): void

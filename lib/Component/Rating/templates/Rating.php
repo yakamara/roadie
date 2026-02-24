@@ -8,9 +8,9 @@ use Yakamara\Roadie\Component\Rating\RatingSize;
 
 <wa-rating <?= $this->attributes->with([
     'value' => $this->value ?: null,
-    'max' => $this->max !== 5 ? $this->max : null,
-    'precision' => $this->precision !== 1.0 ? $this->precision : null,
-    'size' => $this->size !== RatingSize::Medium ? $this->size : null,
+    'max' => 5 !== $this->max ? $this->max : null,
+    'precision' => 1.0 !== $this->precision ? $this->precision : null,
+    'size' => RatingSize::Medium !== $this->size ? $this->size : null,
     'label' => $this->label ?: null,
     'disabled' => $this->disabled,
     'readonly' => $this->readonly,

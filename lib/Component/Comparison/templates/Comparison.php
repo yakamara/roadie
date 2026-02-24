@@ -7,7 +7,7 @@ use Yakamara\Roadie\Component\Component;
 ?>
 
 <wa-comparison <?= $this->attributes->with([
-    'position' => $this->position !== 50 ? $this->position : null,
+    'position' => 50 !== $this->position ? $this->position : null,
 ])->toString() ?>>
     <?= Component::slot($this->before, 'before') ?>
     <?= Component::slot($this->after, 'after') ?>

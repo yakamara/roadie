@@ -14,9 +14,9 @@ use Yakamara\Roadie\Component\Switch\SwitchToggle;
     'default-checked' => $this->defaultChecked,
     'disabled' => $this->disabled,
     'required' => $this->required,
-    'size' => $this->size !== SwitchSize::Medium ? $this->size : null,
+    'size' => SwitchSize::Medium !== $this->size ? $this->size : null,
     'hint' => $this->hint ?: null,
-    'with-hint' => $this->hint !== null,
+    'with-hint' => null !== $this->hint,
 ])->toString() ?>>
     <?= $this->hint instanceof Component ? Component::slot($this->hint, 'hint') : '' ?>
     <?= Component::slot($this->label) ?>

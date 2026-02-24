@@ -6,6 +6,8 @@ use rex;
 use rex_article_slice;
 use rex_string;
 
+use const PREG_SET_ORDER;
+
 class SliceManager
 {
     // Regulärer Ausdruck, der alle Überschriften erfasst
@@ -24,9 +26,9 @@ class SliceManager
     private int $currentDepth = 0;
 
     // Singleton-Pattern
-    public static function getInstance(): ?SliceManager
+    public static function getInstance(): ?self
     {
-        if (self::$instance === null) {
+        if (null === self::$instance) {
             self::$instance = new self();
         }
         return self::$instance;
@@ -58,13 +60,13 @@ class SliceManager
         if (!$this->hasH1) {
             $this->currentDepth = 1;
             $this->hasH1 = true;
-        } elseif ($type === SliceType::NEW_SECTION) {
+        } elseif (SliceType::NEW_SECTION === $type) {
             $this->currentDepth = 2;
-        } elseif ($type === SliceType::SUB_SECTION) {
-            $this->currentDepth++;
-        } elseif (1 === $this->currentDepth && $type === SliceType::CONTINUATION) {
+        } elseif (SliceType::SUB_SECTION === $type) {
+            ++$this->currentDepth;
+        } elseif (1 === $this->currentDepth && SliceType::CONTINUATION === $type) {
             // Sonderfall, wenn der Slice fortgesetzt wird aber sich direkt nach einer h1 befindet
-            $this->currentDepth++;
+            ++$this->currentDepth;
         }
         // Bei SliceType::CONTINUATION bleibt die Tiefe ansonsten gleich
 
@@ -78,19 +80,18 @@ class SliceManager
     public function getHeadingTag(): string
     {
         $level = min(6, max(1, $this->currentDepth)); // h1-h6 sicherstellen
-        return 'h'.$level;
+        return 'h' . $level;
     }
 
     // Gibt das HTML für eine Überschrift zurück
     public function renderHeading($heading, array $attributes = []): string
     {
         $tag = $this->getHeadingTag();
-        return '<'.$tag.rex_string::buildAttributes($attributes).'>'.$heading.'</'.$tag.'>';
+        return '<' . $tag . rex_string::buildAttributes($attributes) . '>' . $heading . '</' . $tag . '>';
     }
 
-
     /**
-     * Verarbeitet Html-Inhalte (WYSIWYG) und passt Überschriften an die aktuelle Hierarchie an
+     * Verarbeitet Html-Inhalte (WYSIWYG) und passt Überschriften an die aktuelle Hierarchie an.
      *
      * @param string $html Der HTML-Inhalt aus dem WYSIWYG-Editor
      * @param int $baseOffset Offset für die Überschriftenebenen (0 = keine Änderung)
@@ -115,8 +116,8 @@ class SliceManager
         // Kleinste verwendete Überschrift bestimmen
         $minLevel = 6; // Startwert hoch setzen
         foreach ($matches as $match) {
-            $level = (int)substr($match['tagName'], 1, 1);
-            if ($level !== 2) { // h2 bleibt immer h2
+            $level = (int) substr($match['tagName'], 1, 1);
+            if (2 !== $level) { // h2 bleibt immer h2
                 $minLevel = min($minLevel, $level);
             }
         }
@@ -125,11 +126,11 @@ class SliceManager
         $levelAdjustment = 3 - ($this->hasH1 ? max(2, $minLevel) : $minLevel);
 
         // 2. Schritt: Ersetzen mit den neuen Levels
-        return preg_replace_callback(self::HEADING_PATTERN, function ($match) use ($levelAdjustment, &$lastLevel) {
-            $originalLevel = (int)substr($match['tagName'], 1, 1);
+        return preg_replace_callback(self::HEADING_PATTERN, static function ($match) use ($levelAdjustment, &$lastLevel) {
+            $originalLevel = (int) substr($match['tagName'], 1, 1);
 
             // Falls eine h1 existiert, wird sie zur h2, ansonsten bleibt h2 als h2 erhalten
-            $newLevel = $originalLevel === 1 ? 2 : ($originalLevel === 2 ? 2 : max(3, min(6, $originalLevel + $levelAdjustment)));
+            $newLevel = 1 === $originalLevel ? 2 : (2 === $originalLevel ? 2 : max(3, min(6, $originalLevel + $levelAdjustment)));
 
             // Verhindert Lücken zwischen den Überschriften
             if ($newLevel > $lastLevel + 1) {
@@ -148,7 +149,6 @@ class SliceManager
     {
         return preg_replace('@<p>(<strong>)?(<br\s?\/?>)?(<\/strong>)?<\/p>@', '', $html);
     }
-
 
     // Gibt die aktuelle Abschnittstiefe zurück
     public function getCurrentDepth(): int

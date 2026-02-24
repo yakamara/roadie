@@ -1,6 +1,7 @@
 <?php
+
 /**
- * forked from https://github.com/bpolaszek/webpack-encore-resolver
+ * forked from https://github.com/bpolaszek/webpack-encore-resolver.
  */
 
 namespace Yakamara\Roadie\Asset;
@@ -23,7 +24,7 @@ final class AssetResolver
 
     public function __construct(?string $buildPath = null)
     {
-        $this->buildPath = rtrim($buildPath ?? rex_path::frontend('build'), '/').'/';
+        $this->buildPath = rtrim($buildPath ?? rex_path::frontend('build'), '/') . '/';
         $this->entryPoints = $this->loadJson('entrypoints.json');
         $this->manifest = $this->loadJson('manifest.json');
     }
@@ -38,7 +39,7 @@ final class AssetResolver
 
     public function getAssetUrl(string $asset): string
     {
-        return $this->manifest['build/'.ltrim($asset, '/')] ?? $asset;
+        return $this->manifest['build/' . ltrim($asset, '/')] ?? $asset;
     }
 
     public function getEntrypointFiles(string $entryName): array

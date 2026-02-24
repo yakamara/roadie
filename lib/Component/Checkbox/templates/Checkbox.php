@@ -15,9 +15,9 @@ use Yakamara\Roadie\Component\Component;
     'indeterminate' => $this->indeterminate,
     'disabled' => $this->disabled,
     'required' => $this->required,
-    'size' => $this->size !== CheckboxSize::Medium ? $this->size : null,
+    'size' => CheckboxSize::Medium !== $this->size ? $this->size : null,
     'hint' => $this->hint ?: null,
-    'with-hint' => $this->hint !== null,
+    'with-hint' => null !== $this->hint,
 ])->toString() ?>>
     <?= $this->hint instanceof Component ? Component::slot($this->hint, 'hint') : '' ?>
     <?= Component::slot($this->label) ?>

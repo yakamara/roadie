@@ -12,8 +12,6 @@ enum SliceType: string
     case SUB_SECTION = 'SUB_SECTION';
     case CONTINUATION = 'CONTINUATION';
 
-
-
     public function getTranslation(): string
     {
         return match ($this) {

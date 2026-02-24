@@ -10,13 +10,13 @@ use Yakamara\Roadie\Component\Input\InputType;
 ?>
 
 <wa-input <?= $this->attributes->with([
-    'type' => $this->type !== InputType::Text ? $this->type : null,
+    'type' => InputType::Text !== $this->type ? $this->type : null,
     'label' => $this->label ?: null,
     'value' => $this->value,
     'default-value' => $this->defaultValue,
     'placeholder' => $this->placeholder ?: null,
-    'size' => $this->size !== InputSize::Medium ? $this->size : null,
-    'appearance' => $this->appearance !== InputAppearance::Outlined ? $this->appearance : null,
+    'size' => InputSize::Medium !== $this->size ? $this->size : null,
+    'appearance' => InputAppearance::Outlined !== $this->appearance ? $this->appearance : null,
     'name' => $this->name,
     'disabled' => $this->disabled,
     'readonly' => $this->readonly,
@@ -35,13 +35,13 @@ use Yakamara\Roadie\Component\Input\InputType;
     'autocomplete' => $this->autocomplete,
     'autocapitalize' => $this->autocapitalize,
     'autocorrect' => $this->autocorrect,
-    'spellcheck' => $this->spellcheck !== null ? ($this->spellcheck ? 'true' : 'false') : null,
+    'spellcheck' => null !== $this->spellcheck ? ($this->spellcheck ? 'true' : 'false') : null,
     'autofocus' => $this->autofocus,
     'enterkeyhint' => $this->enterkeyhint,
     'inputmode' => $this->inputmode ?? $this->type->toInputmode(),
     'with-clear' => $this->withClear,
-    'with-hint' => $this->hint !== null,
-    'with-label' => $this->label !== null,
+    'with-hint' => null !== $this->hint,
+    'with-label' => null !== $this->label,
 ])->toString() ?>>
     <?= $this->label instanceof Component ? Component::slot($this->label, 'label') : '' ?>
     <?= $this->hint instanceof Component ? Component::slot($this->hint, 'hint') : '' ?>

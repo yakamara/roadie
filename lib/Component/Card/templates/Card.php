@@ -9,11 +9,11 @@ use Yakamara\Roadie\Component\Component;
 ?>
 
 <wa-card <?= $this->attributes->with([
-    'appearance' => $this->appearance !== CardAppearance::Outlined ? $this->appearance : null,
-    'orientation' => $this->orientation !== CardOrientation::Vertical ? $this->orientation : null,
-    'with-header' => $this->header !== null,
-    'with-footer' => $this->footer !== null,
-    'with-media' => $this->media !== null,
+    'appearance' => CardAppearance::Outlined !== $this->appearance ? $this->appearance : null,
+    'orientation' => CardOrientation::Vertical !== $this->orientation ? $this->orientation : null,
+    'with-header' => null !== $this->header,
+    'with-footer' => null !== $this->footer,
+    'with-media' => null !== $this->media,
 ])->toString() ?>>
     <?= Component::slot($this->media, 'media') ?>
     <?= Component::slot($this->header, 'header') ?>

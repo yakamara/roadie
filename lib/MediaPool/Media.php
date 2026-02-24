@@ -6,9 +6,10 @@ use rex_clang;
 use rex_media;
 use rex_media_manager;
 
+use const PATHINFO_FILENAME;
+
 class Media
 {
-
     private ?rex_media $media;
 
     protected function __construct(string $fileName)
@@ -16,7 +17,7 @@ class Media
         $this->media = rex_media::get($fileName);
     }
 
-    public static function get(string $fileName): null|static
+    public static function get(string $fileName): ?static
     {
         $instance = new self($fileName);
         if ($instance->media) {
@@ -63,12 +64,14 @@ class Media
     {
         return [$this->media->getWidth(), $this->media->getHeight()];
     }
+
     public function getDimensionsByMediaManagerType(string $mediaManagerType): array
     {
         $media = rex_media_manager::create($mediaManagerType, $this->media->getFileName())->getMedia();
 
         return [$media->getWidth(), $media->getHeight()];
     }
+
     public function getFormat(): string
     {
         return $this->media->getType();

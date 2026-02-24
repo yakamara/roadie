@@ -19,7 +19,7 @@ use Yakamara\Roadie\Component\Component;
     'value' => $this->value,
     'href' => $this->href,
     'target' => $this->target,
-    'rel' => $this->href && $this->rel !== 'noreferrer noopener' ? $this->rel : null,
+    'rel' => $this->href && 'noreferrer noopener' !== $this->rel ? $this->rel : null,
     'download' => $this->download,
     'form-action' => $this->formAction,
     'form-enctype' => $this->formEnctype,

@@ -9,7 +9,7 @@ use Yakamara\Roadie\Component\Component;
 <wa-breadcrumb-item <?= $this->attributes->with([
     'href' => $this->href,
     'target' => $this->target,
-    'rel' => $this->href && $this->rel !== 'noreferrer noopener' ? $this->rel : null,
+    'rel' => $this->href && 'noreferrer noopener' !== $this->rel ? $this->rel : null,
 ])->toString() ?>>
     <?= Component::slot($this->start, 'start') ?>
     <?= Component::slot($this->end, 'end') ?>

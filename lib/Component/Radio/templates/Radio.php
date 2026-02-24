@@ -9,7 +9,7 @@ use Yakamara\Roadie\Component\Radio\RadioAppearance;
 
 <wa-radio <?= $this->attributes->with([
     'value' => $this->value,
-    'appearance' => $this->appearance !== RadioAppearance::Default ? $this->appearance : null,
+    'appearance' => RadioAppearance::Default !== $this->appearance ? $this->appearance : null,
     'size' => $this->size,
     'disabled' => $this->disabled,
 ])->toString() ?>>

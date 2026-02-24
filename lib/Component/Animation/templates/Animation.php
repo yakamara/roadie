@@ -11,15 +11,15 @@ use Yakamara\Roadie\Component\Component;
 <wa-animation <?= $this->attributes->with([
     'name' => $this->name,
     'play' => $this->play,
-    'duration' => $this->duration !== 1000 ? $this->duration : null,
-    'delay' => $this->delay !== 0 ? $this->delay : null,
-    'end-delay' => $this->endDelay !== 0 ? $this->endDelay : null,
+    'duration' => 1000 !== $this->duration ? $this->duration : null,
+    'delay' => 0 !== $this->delay ? $this->delay : null,
+    'end-delay' => 0 !== $this->endDelay ? $this->endDelay : null,
     'easing' => $this->easing,
     'iterations' => $this->iterations,
-    'iteration-start' => $this->iterationStart !== 0.0 ? $this->iterationStart : null,
-    'direction' => $this->direction !== AnimationDirection::Normal ? $this->direction : null,
-    'fill' => $this->fill !== AnimationFill::Auto ? $this->fill : null,
-    'playback-rate' => $this->playbackRate !== 1.0 ? $this->playbackRate : null,
+    'iteration-start' => 0.0 !== $this->iterationStart ? $this->iterationStart : null,
+    'direction' => AnimationDirection::Normal !== $this->direction ? $this->direction : null,
+    'fill' => AnimationFill::Auto !== $this->fill ? $this->fill : null,
+    'playback-rate' => 1.0 !== $this->playbackRate ? $this->playbackRate : null,
 ])->toString() ?>>
     <?= Component::slot($this->content) ?>
 </wa-animation>

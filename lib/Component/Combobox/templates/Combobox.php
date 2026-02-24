@@ -1,11 +1,11 @@
 <?php
 
-use Yakamara\Roadie\Component\Component;
 use Yakamara\Roadie\Component\Combobox\Combobox;
 use Yakamara\Roadie\Component\Combobox\ComboboxAppearance;
 use Yakamara\Roadie\Component\Combobox\ComboboxAutocomplete;
 use Yakamara\Roadie\Component\Combobox\ComboboxPlacement;
 use Yakamara\Roadie\Component\Combobox\ComboboxSize;
+use Yakamara\Roadie\Component\Component;
 
 /** @var Combobox $this */
 ?>
@@ -16,20 +16,20 @@ use Yakamara\Roadie\Component\Combobox\ComboboxSize;
     'name' => $this->name,
     'value' => $this->value,
     'placeholder' => $this->placeholder,
-    'size' => $this->size !== ComboboxSize::Medium ? $this->size : null,
-    'appearance' => $this->appearance !== ComboboxAppearance::Outlined ? $this->appearance : null,
-    'autocomplete' => $this->autocomplete !== ComboboxAutocomplete::List ? $this->autocomplete : null,
+    'size' => ComboboxSize::Medium !== $this->size ? $this->size : null,
+    'appearance' => ComboboxAppearance::Outlined !== $this->appearance ? $this->appearance : null,
+    'autocomplete' => ComboboxAutocomplete::List !== $this->autocomplete ? $this->autocomplete : null,
     'allow-custom-value' => $this->allowCustomValue,
     'multiple' => $this->multiple,
-    'max-options-visible' => $this->maxOptionsVisible !== 3 ? $this->maxOptionsVisible : null,
+    'max-options-visible' => 3 !== $this->maxOptionsVisible ? $this->maxOptionsVisible : null,
     'disabled' => $this->disabled,
     'required' => $this->required,
     'pill' => $this->pill,
     'with-clear' => $this->withClear,
     'open' => $this->open,
-    'placement' => $this->placement !== ComboboxPlacement::Bottom ? $this->placement : null,
-    'with-label' => $this->label !== null,
-    'with-hint' => $this->hint !== null,
+    'placement' => ComboboxPlacement::Bottom !== $this->placement ? $this->placement : null,
+    'with-label' => null !== $this->label,
+    'with-hint' => null !== $this->hint,
 ])->toString() ?>>
     <?= $this->label instanceof Component ? Component::slot($this->label, 'label') : '' ?>
     <?= $this->hint instanceof Component ? Component::slot($this->hint, 'hint') : '' ?>

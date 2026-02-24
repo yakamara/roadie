@@ -16,7 +16,7 @@ use Yakamara\Roadie\Component\FormatDate\FormatDateHourFormat;
     'hour' => $this->hour,
     'minute' => $this->minute,
     'second' => $this->second,
-    'hour-format' => $this->hourFormat !== FormatDateHourFormat::Auto ? $this->hourFormat : null,
+    'hour-format' => FormatDateHourFormat::Auto !== $this->hourFormat ? $this->hourFormat : null,
     'time-zone' => $this->timeZone,
     'time-zone-name' => $this->timeZoneName,
     'lang' => $this->lang,

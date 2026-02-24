@@ -12,13 +12,13 @@ use Yakamara\Roadie\Component\RadioGroup\RadioGroupOrientation;
     'name' => $this->name,
     'value' => $this->value,
     'default-value' => $this->defaultValue,
-    'orientation' => $this->orientation !== RadioGroupOrientation::Vertical ? $this->orientation : null,
+    'orientation' => RadioGroupOrientation::Vertical !== $this->orientation ? $this->orientation : null,
     'size' => $this->size,
     'disabled' => $this->disabled,
     'required' => $this->required,
     'hint' => $this->hint ?: null,
-    'with-label' => $this->label !== null,
-    'with-hint' => $this->hint !== null,
+    'with-label' => null !== $this->label,
+    'with-hint' => null !== $this->hint,
 ])->toString() ?>>
     <?= $this->label instanceof Component ? Component::slot($this->label, 'label') : '' ?>
     <?= $this->hint instanceof Component ? Component::slot($this->hint, 'hint') : '' ?>

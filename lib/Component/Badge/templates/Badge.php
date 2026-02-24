@@ -10,6 +10,6 @@ use Yakamara\Roadie\Component\Component;
 <wa-badge <?= $this->attributes->with([
     'appearance' => $this->appearance,
     'variant' => $this->variant,
-    'attention' => $this->attention !== BadgeAttention::None ? $this->attention : null,
+    'attention' => BadgeAttention::None !== $this->attention ? $this->attention : null,
     'pill' => $this->pill,
 ])->toString() ?>><?= Component::slot($this->label) ?></wa-badge>

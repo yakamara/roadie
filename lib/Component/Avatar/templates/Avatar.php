@@ -12,8 +12,8 @@ use Yakamara\Roadie\Component\Component;
     'label' => $this->label,
     'image' => $this->image,
     'initials' => $this->initials,
-    'shape' => $this->shape !== AvatarShape::Circle ? $this->shape : null,
-    'loading' => $this->loading !== AvatarLoading::Eager ? $this->loading : null,
+    'shape' => AvatarShape::Circle !== $this->shape ? $this->shape : null,
+    'loading' => AvatarLoading::Eager !== $this->loading ? $this->loading : null,
 ])->toString() ?>>
     <?= Component::slot($this->icon, 'icon') ?>
 </wa-avatar>

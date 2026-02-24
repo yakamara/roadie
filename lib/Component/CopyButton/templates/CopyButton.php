@@ -14,8 +14,8 @@ use Yakamara\Roadie\Component\CopyButton\CopyButtonTooltipPlacement;
     'copy-label' => $this->copyLabel ?: null,
     'success-label' => $this->successLabel ?: null,
     'error-label' => $this->errorLabel ?: null,
-    'feedback-duration' => $this->feedbackDuration !== 1000 ? $this->feedbackDuration : null,
-    'tooltip-placement' => $this->tooltipPlacement !== CopyButtonTooltipPlacement::Top ? $this->tooltipPlacement : null,
+    'feedback-duration' => 1000 !== $this->feedbackDuration ? $this->feedbackDuration : null,
+    'tooltip-placement' => CopyButtonTooltipPlacement::Top !== $this->tooltipPlacement ? $this->tooltipPlacement : null,
 ])->toString() ?>>
     <?= Component::slot($this->copyIcon, 'copy-icon') ?>
     <?= Component::slot($this->successIcon, 'success-icon') ?>

@@ -10,9 +10,9 @@ use Yakamara\Roadie\Component\Popover\PopoverPlacement;
 <wa-popover <?= $this->attributes->with([
     'for' => $this->targetId,
     'open' => $this->open,
-    'placement' => $this->placement !== PopoverPlacement::Top ? $this->placement : null,
-    'distance' => $this->distance !== 8 ? $this->distance : null,
-    'skidding' => $this->skidding !== 0 ? $this->skidding : null,
+    'placement' => PopoverPlacement::Top !== $this->placement ? $this->placement : null,
+    'distance' => 8 !== $this->distance ? $this->distance : null,
+    'skidding' => 0 !== $this->skidding ? $this->skidding : null,
     'without-arrow' => $this->withoutArrow,
 ])->toString() ?>>
     <?= Component::slot($this->content) ?>

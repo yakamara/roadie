@@ -10,8 +10,8 @@ use Yakamara\Roadie\Component\Dropdown\DropdownItemVariant;
 
 <wa-dropdown-item <?= $this->attributes->with([
     'value' => $this->value,
-    'type' => $this->type !== DropdownItemType::Normal ? $this->type : null,
-    'variant' => $this->variant !== DropdownItemVariant::Default ? $this->variant : null,
+    'type' => DropdownItemType::Normal !== $this->type ? $this->type : null,
+    'variant' => DropdownItemVariant::Default !== $this->variant ? $this->variant : null,
     'checked' => $this->checked,
     'disabled' => $this->disabled,
 ])->toString() ?>>

@@ -9,7 +9,7 @@ use Yakamara\Roadie\Component\FormatBytes\FormatBytesUnit;
 
 <wa-format-bytes <?= $this->attributes->with([
     'value' => $this->value,
-    'unit' => $this->unit !== FormatBytesUnit::Byte ? $this->unit : null,
-    'display' => $this->display !== FormatBytesDisplay::Short ? $this->display : null,
+    'unit' => FormatBytesUnit::Byte !== $this->unit ? $this->unit : null,
+    'display' => FormatBytesDisplay::Short !== $this->display ? $this->display : null,
     'lang' => $this->lang,
 ])->toString() ?>></wa-format-bytes>

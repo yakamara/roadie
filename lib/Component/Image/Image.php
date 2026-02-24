@@ -3,11 +3,11 @@
 namespace Yakamara\Roadie\Component\Image;
 
 use InvalidArgumentException;
+use rex_url;
 use Yakamara\Roadie\Component\Component;
 use Yakamara\Roadie\Component\HtmlAttributes;
 use Yakamara\Roadie\MediaPool\Media;
 use Yakamara\Roadie\Util\FileTypeDetector;
-use rex_url;
 
 use function count;
 use function in_array;

@@ -9,15 +9,15 @@ use Yakamara\Roadie\Component\Page\PageNavigationPlacement;
 
 <wa-page <?= $this->attributes->with([
     'mobile-breakpoint' => $this->mobileBreakpoint,
-    'navigation-placement' => $this->navigationPlacement !== PageNavigationPlacement::Start ? $this->navigationPlacement : null,
+    'navigation-placement' => PageNavigationPlacement::Start !== $this->navigationPlacement ? $this->navigationPlacement : null,
     'nav-open' => $this->navOpen,
     'disable-navigation-toggle' => $this->disableNavigationToggle,
-    'with-banner' => $this->banner !== null,
-    'with-header' => $this->header !== null,
-    'with-subheader' => $this->subheader !== null,
-    'with-navigation' => $this->navigation !== null,
-    'with-aside' => $this->aside !== null,
-    'with-footer' => $this->footer !== null,
+    'with-banner' => null !== $this->banner,
+    'with-header' => null !== $this->header,
+    'with-subheader' => null !== $this->subheader,
+    'with-navigation' => null !== $this->navigation,
+    'with-aside' => null !== $this->aside,
+    'with-footer' => null !== $this->footer,
 ])->toString() ?>>
     <?= Component::slot($this->banner, 'banner') ?>
     <?= Component::slot($this->header, 'header') ?>

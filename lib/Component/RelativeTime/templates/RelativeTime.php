@@ -9,8 +9,8 @@ use Yakamara\Roadie\Component\RelativeTime\RelativeTimeNumeric;
 
 <wa-relative-time <?= $this->attributes->with([
     'date' => $this->date,
-    'format' => $this->format !== RelativeTimeFormat::Long ? $this->format : null,
-    'numeric' => $this->numeric !== RelativeTimeNumeric::Auto ? $this->numeric : null,
+    'format' => RelativeTimeFormat::Long !== $this->format ? $this->format : null,
+    'numeric' => RelativeTimeNumeric::Auto !== $this->numeric ? $this->numeric : null,
     'sync' => $this->sync,
     'lang' => $this->lang,
 ])->toString() ?>></wa-relative-time>

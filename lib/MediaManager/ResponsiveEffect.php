@@ -10,13 +10,12 @@ class rex_effect_roadie_responsive extends rex_effect_abstract
         if (!rex_get('roadie', 'bool', false)) {
             return;
         }
-//        $file = rex_media_manager::getMediaFile();
+        //        $file = rex_media_manager::getMediaFile();
         $fileName = $this->media->getMediaFilename();
         $data = self::parseFileName($fileName);
         $this->media->setMediaPath(rex_path::media($data['fileName']));
         $this->media->setFormat($data['extension']);
     }
-
 
     /**
      * Returns an array of image data based on the given filename.
@@ -43,12 +42,10 @@ class rex_effect_roadie_responsive extends rex_effect_abstract
      * ]
      * ```
      *
-     * @param string $fileName
-     *
      * @return array{
      *     fileName: string,
      *     format: string,
-     *     width: integer|null
+     *     width: int|null
      * }
      */
     private static function parseFileName(string $fileName): array
@@ -64,7 +61,7 @@ class rex_effect_roadie_responsive extends rex_effect_abstract
         return [
             'fileName' => pathinfo($parts[0], PATHINFO_FILENAME) . '.' . $extension,
             'extension' => $extension,
-            'width' => (isset($parts[1]) && in_array((int)$parts[1], ImageResolutionValues::getValue(ImageResolution::All)) ? (int)$parts[1] : null),
+            'width' => (isset($parts[1]) && in_array((int) $parts[1], ImageResolutionValues::getValue(ImageResolution::All)) ? (int) $parts[1] : null),
             'format' => $format,
         ];
     }
@@ -80,7 +77,7 @@ class rex_effect_roadie_responsive extends rex_effect_abstract
             return;
         }
 
-        $effects = (array)$ep->getSubject();
+        $effects = (array) $ep->getSubject();
         $fileName = rex_media_manager::getMediaFile();
         $data = self::parseFileName($fileName);
 
@@ -90,8 +87,8 @@ class rex_effect_roadie_responsive extends rex_effect_abstract
 
         foreach ($effects as $index => $effect) {
             if (isset($effect['params']['width'])) {
-                if (isset($effect['params']['height']) && (int)$effect['params']['height'] > 0) {
-                    $effect['params']['height'] = ceil((int)$effect['params']['height'] * $data['width'] / (int)$effect['params']['width']);
+                if (isset($effect['params']['height']) && (int) $effect['params']['height'] > 0) {
+                    $effect['params']['height'] = ceil((int) $effect['params']['height'] * $data['width'] / (int) $effect['params']['width']);
                 }
                 $effect['params']['width'] = $data['width'];
             }
