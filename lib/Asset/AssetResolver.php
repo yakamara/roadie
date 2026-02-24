@@ -5,9 +5,7 @@
 
 namespace Yakamara\Roadie\Asset;
 
-use InvalidArgumentException;
 use rex_file;
-use rex_functional_exception;
 use rex_path;
 
 final class AssetResolver
@@ -20,6 +18,9 @@ final class AssetResolver
     /** @var array<string,string>|null */
     private ?array $manifest = null;
 
+    /** @var array<string,array<mixed>> */
+    private static array $cache = [];
+
     public function __construct(?string $buildPath = null)
     {
         $this->buildPath = rtrim($buildPath ?? rex_path::frontend('build'), '/').'/';
@@ -30,11 +31,11 @@ final class AssetResolver
     private function loadJson(string $fileName): array
     {
         $filePath = $this->buildPath . $fileName;
-        if (file_exists($filePath)) {
-            return json_decode(rex_file::get($filePath), true) ?? [];
-        }
-        return [];
+        return self::$cache[$filePath] ??= (file_exists($filePath)
+            ? json_decode(rex_file::get($filePath), true) ?? []
+            : []);
     }
+
     public function getAssetUrl(string $asset): string
     {
         return $this->manifest['build/'.ltrim($asset, '/')] ?? $asset;
@@ -53,23 +54,6 @@ final class AssetResolver
         ];
     }
 
-    public function getFontFiles(): array
-    {
-        $fonts = [];
-        foreach ($this->manifest as $key => $path) {
-            if (
-                str_ends_with($key, '.woff2') ||
-                str_ends_with($key, '.woff') ||
-                str_ends_with($key, '.ttf') ||
-                str_ends_with($key, '.otf') ||
-                str_ends_with($key, '.eot')
-            ) {
-                $fonts[$path] = 'font/'.pathinfo($key, PATHINFO_EXTENSION);
-            }
-        }
-        return $fonts;
-    }
-
     public function getSvgFiles(): array
     {
         $svgs = [];
@@ -80,33 +64,4 @@ final class AssetResolver
         }
         return $svgs;
     }
-
-//    /**
-//     * @param string $resource
-//     *
-//     * @return string
-//     * @throws rex_functional_exception
-//     */
-//    public function getAssetIcon(string $resource): string
-//    {
-//        $iconPath = '/build/assets/icons/';
-//        $id = str_replace([$iconPath, '.svg', 'icon-'], '', $this->getAssetPath($iconPath . $resource . '.svg'));
-//        return '<svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-' . $id . '"></use></svg>';
-//    }
-//
-//    /**
-//     * @param string $resource
-//     *
-//     * @return string
-//     * @throws rex_functional_exception
-//     */
-//    public function getAssetSvg(string $resource): string
-//    {
-//        $file = $this->getAssetPath('/build/'.$resource.'.svg');
-//
-//        if ($content = rex_file::get($file)) {
-//            return $content;
-//        }
-//        return rex_file::get(rex_path::frontend(ltrim($file, '/')));
-//    }
 }

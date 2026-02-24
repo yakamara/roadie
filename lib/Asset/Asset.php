@@ -2,130 +2,120 @@
 
 namespace Yakamara\Roadie\Asset;
 
+use InvalidArgumentException;
+use rex;
 use rex_file;
 use rex_path;
 
-class Asset
+final class Asset
 {
-
     public static function url(string $fileName): string
     {
-        return (new AssetResolver())->getAssetUrl($fileName);
+        return self::resolver()->getAssetUrl($fileName);
     }
 
-    /**
-     * @param string      $entrypoint
-     * @param string|null $directory
-     *
-     * @return string
-     */
-    public static function scriptTags(string $entrypoint, string $directory = null): string
+    public static function scriptTags(string $entrypoint, ?string $directory = null): string
     {
         $scriptTags = [];
-        $assets = (new AssetResolver($directory))->getEntrypointFiles($entrypoint);
+        $assets = self::resolver($directory)->getEntrypointFiles($entrypoint);
         foreach ($assets['js'] as $jsFile) {
             $scriptTags[] = '<script src="'.rex_escape($jsFile).'" defer></script>';
         }
         return implode("\n", $scriptTags);
     }
 
-    /**
-     * @param string      $entrypoint
-     * @param string|null $directory
-     *
-     * @return string
-     */
-    public static function linkTags(string $entrypoint, string $directory = null): string
+    public static function linkTags(string $entrypoint, ?string $directory = null): string
     {
         $linkTags = [];
-        $resolver = new AssetResolver($directory);
-
-        $fonts = $resolver->getFontFiles();
-        foreach ($fonts as $fontFile => $fontType) {
-            $linkTags[] = '<link rel="preload" href="' . rex_escape($fontFile) . '" as="font" type="' . $fontType . '" crossorigin="anonymous">';
-        }
-
-        $assets = $resolver->getEntrypointFiles($entrypoint);
+        $assets = self::resolver($directory)->getEntrypointFiles($entrypoint);
         foreach ($assets['css'] as $cssFile) {
             $linkTags[] = '<link rel="stylesheet" href="'.rex_escape($cssFile).'">';
         }
         return implode("\n", $linkTags);
     }
 
-    public static function svgInline(string $fileName): string
+    public static function preloadFont(string $fileName): string
     {
-        $url = self::url($fileName);
-        if ($content = rex_file::get($url)) {
-            return $content;
+        $url = self::resolver()->getAssetUrl($fileName);
+        $ext = strtolower(pathinfo($url, PATHINFO_EXTENSION));
+        return '<link rel="preload" href="'.rex_escape($url).'" as="font" type="font/'.$ext.'" crossorigin="anonymous">';
+    }
+
+    /*
+     * Bedeutungsvolles SVG (z. B. Logo)
+     * Asset::svgInline('images/logo.svg', 'Firmenname')
+     * → <svg class="icon" role="img" aria-label="Firmenname" focusable="false" ...>
+     *
+     * // Dekoratives SVG
+     * Asset::svgInline('images/decoration.svg')
+     * → <svg class="icon" aria-hidden="true" focusable="false" ...>
+     *
+     * Abweichende CSS-Klasse
+     * Asset::svgInline('images/hero.svg', 'Hero Illustration', 'hero-image')
+     * → <svg class="hero-image" role="img" aria-label="Hero Illustration" focusable="false" ...>
+     */
+    public static function svgInline(string $fileName, ?string $label = null, string $class = 'icon'): string
+    {
+        $path = rex_path::frontend(ltrim(self::url($fileName), '/'));
+        $content = rex_file::get($path);
+
+        if (false === $content) {
+            if (rex::isDebugMode()) {
+                throw new InvalidArgumentException("SVG file not found: $path");
+            }
+            return '';
         }
-        return rex_file::get(rex_path::frontend(ltrim($url, '/')));
+
+        $a11yAttrs = $label !== null
+            ? 'role="img" aria-label="'.rex_escape($label).'"'
+            : 'aria-hidden="true"';
+
+        return (string) preg_replace_callback(
+            '/<svg\b([^>]*)>/i',
+            static function (array $matches) use ($class, $a11yAttrs): string {
+                $existingAttrs = $matches[1];
+
+                // Bestehende class-Werte extrahieren und entfernen
+                $existingClass = '';
+                $existingAttrs = (string) preg_replace_callback(
+                    '/\s*\bclass="([^"]*)"/i',
+                    static function (array $m) use (&$existingClass): string {
+                        $existingClass = $m[1];
+                        return '';
+                    },
+                    $existingAttrs,
+                );
+
+                // Überschriebene a11y-Attribute entfernen
+                $existingAttrs = (string) preg_replace(
+                    '/\s*\b(aria-hidden|role|aria-label|focusable)="[^"]*"/i',
+                    '',
+                    $existingAttrs,
+                );
+
+                $mergedClass = trim(($existingClass ? $existingClass . ' ' : '') . $class);
+
+                return '<svg class="' . rex_escape($mergedClass) . '" ' . $a11yAttrs . ' focusable="false"' . $existingAttrs . '>';
+            },
+            $content,
+            1,
+        );
     }
 
     public static function svgSymbol(string $symbolId, ?string $label = null): string
     {
         $cleanId = ltrim(str_replace(['.svg', 'icon-'], '', $symbolId), '/');
-        return '<span class="icon" role="img"'.($label ? ' aria-label="'.rex_escape($label).'"' : '').'><svg class="icon" aria-hidden="true" focusable="false"><use xlink:href="#svg-'.rex_escape($cleanId).'"></use></svg></span>';
+
+        $svgAttrs = $label !== null
+            ? 'role="img" aria-label="'.rex_escape($label).'"'
+            : 'aria-hidden="true"';
+
+        return '<svg class="icon" '.$svgAttrs.' focusable="false"><use href="#svg-'.rex_escape($cleanId).'"></use></svg>';
     }
 
-
-//    /**
-//     * @param string      $resource
-//     * @param string|null $directory
-//     *
-//     * @return string
-//     */
-//    function get(string $resource, string $directory = null): string
-//    {
-//        try {
-//            return (new AssetPathResolver($directory))->getAssetPath($resource);
-//        } catch (rex_functional_exception $e) {
-//            return rex_view::error($e->getMessage());
-//        }
-//    }
-//
-//    /**
-//     * @param string      $resource
-//     * @param string|null $directory
-//     *
-//     * @return string
-//     */
-//    public static function getSvg(string $resource, string $directory = null): string
-//    {
-//        try {
-//            return (new AssetPathResolver($directory))->getAssetSvg($resource);
-//        } catch (rex_functional_exception $e) {
-//            return rex_view::error($e->getMessage());
-//        }
-//    }
-//
-//    /**
-//     * @param string      $resource
-//     * @param string|null $directory
-//     *
-//     * @return string
-//     */
-//    public static function getSvgIcon(string $resource, string $directory = null): string
-//    {
-//        try {
-//            return (new AssetPathResolver($directory))->getAssetIcon($resource);
-//        } catch (rex_functional_exception $e) {
-//            return rex_view::error($e->getMessage());
-//        }
-//    }
-//
-//    /**
-//     * @param string $resource
-//     * @param string|null $directory
-//     *
-//     * @return string
-//     */
-//    public static function getSvgSprite(string $resource, string $directory = null): string
-//    {
-//        try {
-//            $file = (new AssetPathResolver($directory))->getAssetSvg($resource);
-//            return str_replace('<svg', '<svg style="position: absolute; width: 0; height: 0" aria-hidden="true"', $file);
-//        } catch (rex_functional_exception $e) {
-//            return rex_view::error($e->getMessage());
-//        }
-//    }
+    private static function resolver(?string $directory = null): AssetResolver
+    {
+        static $instances = [];
+        return $instances[$directory ?? ''] ??= new AssetResolver($directory);
+    }
 }
