@@ -1,21 +1,66 @@
 <?php
-/*
-use Yakamara\Roadie\Component\Image\LowQualityImagePlaceholder;
+
+//use Yakamara\Roadie\Component\Image\LowQualityImagePlaceholder;
 use Yakamara\Roadie\Component\Template;
-use Yakamara\Roadie\View\Notification;
-use Yakamara\Roadie\View\Section;
+//use Yakamara\Roadie\View\Notification;
+//use Yakamara\Roadie\View\Section;
 
 $addon = rex_addon::get('roadie');
 
-//Template::addDirectory($addon->getPath('lib/Component'));
+Template::addDirectory($addon->getPath('lib/Component/AnimatedImage/templates'));
+Template::addDirectory($addon->getPath('lib/Component/Animation/templates'));
+Template::addDirectory($addon->getPath('lib/Component/Avatar/templates'));
+Template::addDirectory($addon->getPath('lib/Component/Badge/templates'));
+Template::addDirectory($addon->getPath('lib/Component/Breadcrumb/templates'));
 Template::addDirectory($addon->getPath('lib/Component/Button/templates'));
+Template::addDirectory($addon->getPath('lib/Component/ButtonGroup/templates'));
+Template::addDirectory($addon->getPath('lib/Component/Callout/templates'));
 Template::addDirectory($addon->getPath('lib/Component/Card/templates'));
+Template::addDirectory($addon->getPath('lib/Component/Carousel/templates'));
+Template::addDirectory($addon->getPath('lib/Component/Checkbox/templates'));
+Template::addDirectory($addon->getPath('lib/Component/ColorPicker/templates'));
+Template::addDirectory($addon->getPath('lib/Component/Combobox/templates'));
+Template::addDirectory($addon->getPath('lib/Component/Comparison/templates'));
+Template::addDirectory($addon->getPath('lib/Component/CopyButton/templates'));
+Template::addDirectory($addon->getPath('lib/Component/Details/templates'));
+Template::addDirectory($addon->getPath('lib/Component/Dialog/templates'));
+Template::addDirectory($addon->getPath('lib/Component/Divider/templates'));
+Template::addDirectory($addon->getPath('lib/Component/Drawer/templates'));
+Template::addDirectory($addon->getPath('lib/Component/Dropdown/templates'));
+Template::addDirectory($addon->getPath('lib/Component/FileInput/templates'));
+Template::addDirectory($addon->getPath('lib/Component/FormatBytes/templates'));
+Template::addDirectory($addon->getPath('lib/Component/FormatDate/templates'));
+Template::addDirectory($addon->getPath('lib/Component/FormatNumber/templates'));
 Template::addDirectory($addon->getPath('lib/Component/Icon/templates'));
 Template::addDirectory($addon->getPath('lib/Component/Image/templates'));
-Template::addDirectory($addon->getPath('lib/Component/Link/templates'));
+Template::addDirectory($addon->getPath('lib/Component/Input/templates'));
+Template::addDirectory($addon->getPath('lib/Component/NumberInput/templates'));
+Template::addDirectory($addon->getPath('lib/Component/Page/templates'));
+Template::addDirectory($addon->getPath('lib/Component/Popover/templates'));
+Template::addDirectory($addon->getPath('lib/Component/Popup/templates'));
+Template::addDirectory($addon->getPath('lib/Component/ProgressBar/templates'));
+Template::addDirectory($addon->getPath('lib/Component/ProgressRing/templates'));
+Template::addDirectory($addon->getPath('lib/Component/QrCode/templates'));
+Template::addDirectory($addon->getPath('lib/Component/Radio/templates'));
+Template::addDirectory($addon->getPath('lib/Component/RadioGroup/templates'));
+Template::addDirectory($addon->getPath('lib/Component/Rating/templates'));
+Template::addDirectory($addon->getPath('lib/Component/RelativeTime/templates'));
+Template::addDirectory($addon->getPath('lib/Component/Scroller/templates'));
+Template::addDirectory($addon->getPath('lib/Component/Select/templates'));
 Template::addDirectory($addon->getPath('lib/Component/Skeleton/templates'));
-Template::addDirectory($addon->getPath('templates/Shoelace'));
+Template::addDirectory($addon->getPath('lib/Component/Slider/templates'));
+Template::addDirectory($addon->getPath('lib/Component/Sparkline/templates'));
+Template::addDirectory($addon->getPath('lib/Component/Spinner/templates'));
+Template::addDirectory($addon->getPath('lib/Component/SplitPanel/templates'));
+Template::addDirectory($addon->getPath('lib/Component/Switch/templates'));
+Template::addDirectory($addon->getPath('lib/Component/TabGroup/templates'));
+Template::addDirectory($addon->getPath('lib/Component/Tag/templates'));
+Template::addDirectory($addon->getPath('lib/Component/Textarea/templates'));
+Template::addDirectory($addon->getPath('lib/Component/Tooltip/templates'));
+Template::addDirectory($addon->getPath('lib/Component/Tree/templates'));
+Template::addDirectory($addon->getPath('lib/Component/ZoomableFrame/templates'));
 
+/*
 if (rex_addon::get('media_manager')->isAvailable()) {
 //    rex_media_manager::deleteCache();
     rex_media_manager::addEffect(rex_effect_roadie_responsive::class);
