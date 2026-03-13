@@ -17,6 +17,6 @@ use Yakamara\Roadie\Component\Dropdown\DropdownSize;
 ])->toString() ?>>
     <?= Component::slot($this->trigger, 'trigger') ?>
     <?php foreach ($this->items as $item): ?>
-        <?= $item ?>
+        <?= $item instanceof Component ? $item->render() : $item ?>
     <?php endforeach ?>
 </wa-dropdown>

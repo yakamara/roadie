@@ -29,7 +29,7 @@ final class Details extends Component
         /**
          * The summary to show as the toggle label. Can also be set via the summary slot.
          */
-        public ?string $summary = null,
+        public string|Component|null $summary = null,
 
         /**
          * The details' visual appearance.
@@ -55,11 +55,6 @@ final class Details extends Component
          * The name of the details. Used for grouping exclusive details panels.
          */
         public ?string $name = null,
-
-        /**
-         * Custom summary content (overrides the summary attribute).
-         */
-        public string|Component|null $summarySlot = null,
 
         /**
          * Custom expand icon.

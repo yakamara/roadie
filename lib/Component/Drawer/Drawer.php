@@ -29,7 +29,7 @@ final class Drawer extends Component
         /**
          * The drawer's label shown in the header.
          */
-        public ?string $label = null,
+        public string|Component|null $label = null,
 
         /**
          * The direction from which the drawer will open.
@@ -50,11 +50,6 @@ final class Drawer extends Component
          * Removes the header and the default close button.
          */
         public bool $withoutHeader = false,
-
-        /**
-         * Custom label content (overrides the label attribute).
-         */
-        public string|Component|null $labelSlot = null,
 
         /**
          * Optional buttons or controls placed in the header.

@@ -3,6 +3,7 @@
 namespace Yakamara\Roadie\Component\Dropdown;
 
 use Yakamara\Roadie\Component\Component;
+use Yakamara\Roadie\Component\Html;
 use Yakamara\Roadie\Component\HtmlAttributes;
 
 /**
@@ -20,16 +21,16 @@ final class Dropdown extends Component
 {
     public function __construct(
         /**
-         * One or more dropdown items.
-         *
-         * @var list<DropdownItem>
-         */
-        public array $items,
-
-        /**
          * The element that triggers the dropdown.
          */
-        public string|Component|null $trigger = null,
+        public string|Component $trigger,
+
+        /**
+         * One or more dropdown items, components or raw HTML strings.
+         *
+         * @var list<DropdownItem|Component|string>
+         */
+        public array $items,
 
         /**
          * Preferred placement of the menu relative to the trigger.
