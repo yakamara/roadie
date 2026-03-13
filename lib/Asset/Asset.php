@@ -58,10 +58,10 @@ final class Asset
      */
     public static function svgInline(string $fileName, ?string $label = null, string $class = 'icon'): string
     {
-        $path = rex_path::frontend(ltrim(self::url($fileName), '/'));
+        $path = self::url($fileName);
         $content = rex_file::get($path);
 
-        if (false === $content) {
+        if (!$content) {
             if (rex::isDebugMode()) {
                 throw new InvalidArgumentException("SVG file not found: $path");
             }
