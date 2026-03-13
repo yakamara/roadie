@@ -1,0 +1,116 @@
+.roadie-listbox {
+    position: relative;
+    display: inline-flex;
+
+    &--list {
+        display: none;
+        position: absolute;
+        z-index: 1100;
+        min-width: 165px;
+        background: var(--wa-color-surface-raised);
+        border: var(--wa-border-style) var(--wa-border-width-s) var(--wa-color-surface-border);
+        border-radius: var(--wa-border-radius-m);
+        box-shadow: var(--wa-shadow-m);
+        margin: 0;
+        padding: 0.25em;
+        list-style: none;
+    }
+}
+
+// Placement: bottom-end (default)
+.roadie-listbox:not([data-placement]),
+.roadie-listbox[data-placement='bottom-end'] {
+    .roadie-listbox--list {
+        top: calc(100% + 0.25em);
+        right: 0;
+        transform-origin: top right;
+    }
+}
+
+// Placement: bottom-start
+.roadie-listbox[data-placement='bottom-start'] {
+    .roadie-listbox--list {
+        top: calc(100% + 0.25em);
+        left: 0;
+        transform-origin: top left;
+    }
+}
+
+// Placement: top-end
+.roadie-listbox[data-placement='top-end'] {
+    .roadie-listbox--list {
+        bottom: calc(100% + 0.25em);
+        right: 0;
+        transform-origin: bottom right;
+    }
+}
+
+// Placement: top-start
+.roadie-listbox[data-placement='top-start'] {
+    .roadie-listbox--list {
+        bottom: calc(100% + 0.25em);
+        left: 0;
+        transform-origin: bottom left;
+    }
+}
+
+.roadie-listbox.open .roadie-listbox--list {
+    display: flex;
+    flex-direction: column;
+    animation: roadie-listbox-show 50ms ease;
+}
+
+.roadie-listbox.closing .roadie-listbox--list {
+    display: flex;
+    flex-direction: column;
+    pointer-events: none;
+    animation: roadie-listbox-show 50ms ease reverse;
+}
+
+.roadie-listbox--list li {
+    margin: 0;
+    user-select: none;
+
+    @media (hover: hover) {
+        &:hover {
+            background-color: var(--wa-color-neutral-fill-normal);
+        }
+    }
+
+    &:focus-visible {
+        z-index: 1;
+        outline: var(--wa-focus-ring);
+        background-color: var(--wa-color-neutral-fill-normal);
+    }
+}
+
+.roadie-listbox--item {
+    display: flex;
+    align-items: center;
+    gap: var(--wa-space-xs, 0.5rem);
+    padding: var(--wa-space-xs, 0.4rem) var(--wa-space-s, 0.75rem);
+    isolation: isolate;
+    color: var(--wa-color-text-normal);
+    line-height: var(--wa-line-height-condensed);
+    transition: background var(--wa-transition-fast) var(--wa-transition-easing);
+    cursor: pointer;
+
+    &-label {
+        flex: 1 1 auto;
+        min-width: 0;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+}
+
+@keyframes roadie-listbox-show {
+    from {
+        scale: 0.9;
+        opacity: 0;
+    }
+    to {
+        scale: 1;
+        opacity: 1;
+    }
+}

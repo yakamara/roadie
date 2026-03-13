@@ -35,6 +35,7 @@ Template::addDirectory($addon->getPath('lib/Component/FormatNumber/templates'));
 Template::addDirectory($addon->getPath('lib/Component/Icon/templates'));
 Template::addDirectory($addon->getPath('lib/Component/Image/templates'));
 Template::addDirectory($addon->getPath('lib/Component/Input/templates'));
+Template::addDirectory($addon->getPath('lib/Component/Listbox/templates'));
 Template::addDirectory($addon->getPath('lib/Component/NumberInput/templates'));
 Template::addDirectory($addon->getPath('lib/Component/Page/templates'));
 Template::addDirectory($addon->getPath('lib/Component/Popover/templates'));
