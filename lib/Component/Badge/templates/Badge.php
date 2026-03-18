@@ -12,4 +12,4 @@ use Yakamara\Roadie\Component\Component;
     'variant' => $this->variant,
     'attention' => BadgeAttention::None !== $this->attention ? $this->attention : null,
     'pill' => $this->pill,
-])->toString() ?>><?= Component::slot($this->label) ?></wa-badge>
+])->toString() ?>><?= Component::slot($this->content) ?></wa-badge>

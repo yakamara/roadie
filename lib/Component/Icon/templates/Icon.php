@@ -17,4 +17,5 @@ use Yakamara\Roadie\Component\Icon\Icon;
     'rotate' => $this->rotate ?: null,
     'swap-opacity' => $this->swapOpacity,
     'auto-width' => $this->autoWidth,
+    'aria-hidden' => null === $this->label ? 'true' : null,
 ])->toString() ?>></wa-icon>

@@ -24,17 +24,29 @@ final class Tab extends Component
         public string|Component $label,
 
         /**
-         * The name of the tab panel this tab is associated with.
-         * Must match the name attribute of the corresponding <wa-tab-panel>.
+         * The content of the tab panel.
          */
-        public ?string $panel = null,
+        public string|Component $panel,
+
+        /**
+         * The tab panel's name.
+         * Required. Otherwise, the group cannot function correctly.
+         */
+        public string $name,
+
+        /**
+         * When true, the tab panel will be shown.
+         */
+        public bool $active = false,
 
         /**
          * Disables the tab and prevents selection.
          */
         public bool $disabled = false,
 
-        public HtmlAttributes $attributes = new HtmlAttributes(),
+        public HtmlAttributes $tabAttributes = new HtmlAttributes(),
+
+        public HtmlAttributes $panelAttributes = new HtmlAttributes(),
     ) {}
 
     protected function getPath(): string

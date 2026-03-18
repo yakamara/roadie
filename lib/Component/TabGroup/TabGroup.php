@@ -20,13 +20,6 @@ final class TabGroup extends Component
 {
     public function __construct(
         /**
-         * One or more tab panels.
-         *
-         * @var list<TabPanel>
-         */
-        public array $panels,
-
-        /**
          * One or more tabs for the nav slot.
          *
          * @var list<Tab>

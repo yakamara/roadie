@@ -21,7 +21,7 @@ final class Badge extends Component
         /**
          * The badge's content.
          */
-        public string|Component $label,
+        public string|Component $content,
 
         /**
          * The badge's visual appearance.

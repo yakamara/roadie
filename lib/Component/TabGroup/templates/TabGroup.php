@@ -14,10 +14,7 @@ use Yakamara\Roadie\Component\TabGroup\TabGroupPlacement;
     'without-scroll-controls' => $this->withoutScrollControls,
 ])->toString() ?>>
     <?php foreach ($this->tabs as $tab): ?>
-        <?php $tab->attributes->set('slot', 'nav') ?>
+        <?php $tab->tabAttributes->set('slot', 'nav') ?>
         <?= $tab ?>
-    <?php endforeach ?>
-    <?php foreach ($this->panels as $panel): ?>
-        <?= $panel ?>
     <?php endforeach ?>
 </wa-tab-group>
