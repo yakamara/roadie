@@ -22,14 +22,14 @@ final class Details extends Component
 {
     public function __construct(
         /**
+         * The summary to show as the toggle label. Can also be set via the summary slot.
+         */
+        public string|Component $summary,
+
+        /**
          * The details' main content shown when expanded.
          */
         public string|Component $content,
-
-        /**
-         * The summary to show as the toggle label. Can also be set via the summary slot.
-         */
-        public string|Component|null $summary = null,
 
         /**
          * The details' visual appearance.

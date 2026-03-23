@@ -61,7 +61,7 @@ final class Icon extends Component
         /**
          * Sets the rotation of the icon in degrees.
          */
-        public int $rotate = 0,
+        public ?int $rotate = null,
 
         /**
          * Swaps the opacity of duotone icons.
