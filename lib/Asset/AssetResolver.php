@@ -42,6 +42,18 @@ final class AssetResolver
         return $this->manifest['build/' . ltrim($asset, '/')] ?? $asset;
     }
 
+    public function getAssetFilePath(string $asset): string
+    {
+        $manifestKey = 'build/' . ltrim($asset, '/');
+        if (isset($this->manifest[$manifestKey])) {
+            // Manifest-URL kann absolut sein (dev-server: https://localhost:8080/build/...)
+            // oder relativ (/build/...) — nur den Pfadanteil verwenden
+            $urlPath = parse_url($this->manifest[$manifestKey], PHP_URL_PATH) ?? '';
+            return $this->buildPath . ltrim(preg_replace('#^/build/#', '', $urlPath), '/');
+        }
+        return $this->buildPath . ltrim($asset, '/');
+    }
+
     public function getEntrypointFiles(string $entryName): array
     {
         $entry = $this->entryPoints['entrypoints'][$entryName] ?? null;

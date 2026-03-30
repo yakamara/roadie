@@ -5,7 +5,6 @@ namespace Yakamara\Roadie\Asset;
 use InvalidArgumentException;
 use rex;
 use rex_file;
-use rex_path;
 
 use const PATHINFO_EXTENSION;
 
@@ -52,18 +51,18 @@ final class Asset
      * Asset::svgInline('images/decoration.svg')
      * → <svg class="icon" aria-hidden="true" focusable="false" ...>
      *
-     * Abweichende CSS-Klasse
+     * Mit CSS-Klasse
      * Asset::svgInline('images/hero.svg', 'Hero Illustration', 'hero-image')
      * → <svg class="hero-image" role="img" aria-label="Hero Illustration" focusable="false" ...>
      */
-    public static function svgInline(string $fileName, ?string $label = null, string $class = 'icon'): string
+    public static function svgInline(string $fileName, ?string $label = null, ?string $class = null): string
     {
-        $path = self::url($fileName);
-        $content = rex_file::get($path);
+        $filePath = self::resolver()->getAssetFilePath($fileName);
+        $content = rex_file::get($filePath);
 
         if (!$content) {
             if (rex::isDebugMode()) {
-                throw new InvalidArgumentException("SVG file not found: $path");
+                throw new InvalidArgumentException("SVG file not found: $filePath");
             }
             return '';
         }
@@ -95,9 +94,10 @@ final class Asset
                     $existingAttrs,
                 );
 
-                $mergedClass = trim(($existingClass ? $existingClass . ' ' : '') . $class);
+                $mergedClass = trim(($existingClass ? $existingClass . ' ' : '') . ($class ?? ''));
+                $classAttr = $mergedClass !== '' ? ' class="' . rex_escape($mergedClass) . '"' : '';
 
-                return '<svg class="' . rex_escape($mergedClass) . '" ' . $a11yAttrs . ' focusable="false"' . $existingAttrs . '>';
+                return '<svg' . $classAttr . ' ' . $a11yAttrs . ' focusable="false"' . $existingAttrs . '>';
             },
             $content,
             1,
