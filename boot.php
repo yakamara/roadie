@@ -2,6 +2,7 @@
 
 // use Yakamara\Roadie\Component\Image\LowQualityImagePlaceholder;
 use Yakamara\Roadie\Component\Template;
+use Yakamara\Roadie\MediaPool\MediaExtension;
 
 // use Yakamara\Roadie\View\Notification;
 // use Yakamara\Roadie\View\Section;
@@ -63,13 +64,19 @@ Template::addDirectory($addon->getPath('lib/Component/Tooltip/templates'));
 Template::addDirectory($addon->getPath('lib/Component/Tree/templates'));
 Template::addDirectory($addon->getPath('lib/Component/ZoomableFrame/templates'));
 
-/*
+if (rex::isBackend() && rex::getUser()) {
+    rex_extension::register('MEDIA_FORM_EDIT', MediaExtension::extendForm(...));
+    rex_extension::register('MEDIA_LIST_THUMBNAIL', MediaExtension::extendListThumbnail(...));
+    rex_extension::register('MEDIA_UPDATED', MediaExtension::saveOnUpdate(...));
+}
+
 if (rex_addon::get('media_manager')->isAvailable()) {
-//    rex_media_manager::deleteCache();
+    rex_media_manager::deleteCache();
     rex_media_manager::addEffect(rex_effect_roadie_responsive::class);
     rex_extension::register('MEDIA_MANAGER_FILTERSET', rex_effect_roadie_responsive::handle(...), rex_extension::EARLY);
 }
 
+/*
 if (!rex::isBackend()) {
     rex_extension::register('ROADIE_SECTION_REPLACE_PLACEHOLDER', Section::replace(...));
 

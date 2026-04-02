@@ -37,6 +37,11 @@ class Media
         return $this->getValue('med_caption');
     }
 
+    public function isDecorative(): bool
+    {
+        return (bool) $this->media->getValue('med_is_decorative');
+    }
+
     public function getCopyright(): string
     {
         return $this->getValue('med_copyright');
