@@ -1,0 +1,177 @@
+/* ── Inline-Feld ──────────────────────────────────────────────────────────── */
+
+.iconpicker {
+    display: flex;
+}
+
+.iconpicker .btn:not(:last-child) {
+    border-radius: 0;
+}
+.iconpicker .btn:last-child {
+    border-left: 0;
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+}
+
+.iconpicker-current {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    background: #e9ecf2;
+    border: 1px solid #c1c9d4;
+    border-right: 0;
+    border-top-left-radius: 6px;
+    border-bottom-left-radius: 6px;
+}
+
+.iconpicker-current-svg {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+}
+
+.iconpicker-current-label {
+    display: none;
+}
+
+/* ── Modal ────────────────────────────────────────────────────────────────── */
+
+.iconpicker-modal {
+    position: fixed;
+    inset: 0;
+    z-index: 1050;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.iconpicker-modal[hidden] {
+    display: none;
+}
+
+.iconpicker-modal-backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5);
+}
+
+.iconpicker-modal-dialog {
+    position: relative;
+    z-index: 1;
+    background: #fff;
+    border-radius: 6px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+    width: min(640px, 90vw);
+    max-height: 80vh;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.iconpicker-modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 16px;
+    border-bottom: 1px solid #e5e7eb;
+    flex-shrink: 0;
+}
+
+.iconpicker-modal-title {
+    margin: 0;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.iconpicker-modal-close {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #9ca3af;
+    font-size: 16px;
+    line-height: 1;
+    padding: 2px 4px;
+}
+
+.iconpicker-modal-close:hover {
+    color: #111827;
+}
+
+.iconpicker-modal-body {
+    padding: 12px 16px;
+    overflow-y: auto;
+    flex: 1;
+    min-height: 0;
+}
+
+.iconpicker-modal-footer {
+    padding: 10px 16px;
+    border-top: 1px solid #e5e7eb;
+    flex-shrink: 0;
+}
+
+/* ── Suche ────────────────────────────────────────────────────────────────── */
+
+.iconpicker-search {
+    margin-bottom: 12px;
+}
+
+/* ── Libraries & Items ────────────────────────────────────────────────────── */
+
+.iconpicker-library h5 {
+    margin: 16px 0 8px;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: .06em;
+    color: #9ca3af;
+    font-weight: 600;
+}
+
+.iconpicker-library:first-child h5 {
+    margin-top: 0;
+}
+
+.iconpicker-items {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(48px, 1fr));
+    gap: 4px;
+}
+
+.iconpicker-item {
+    aspect-ratio: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: none;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    cursor: pointer;
+    padding: 6px;
+    transition: background .1s, border-color .1s;
+}
+
+.iconpicker-item[hidden] {
+    display: none;
+}
+
+.iconpicker-item:hover {
+    background: #f3f4f6;
+    border-color: #d1d5db;
+}
+
+.iconpicker-item.is-active {
+    background: #eff6ff;
+    border-color: #3b82f6;
+}
+
+.iconpicker-svg {
+    width: 24px;
+    height: 24px;
+    fill: currentColor;
+    display: block;
+}

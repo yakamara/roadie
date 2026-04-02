@@ -5,3 +5,7 @@ requires:
     redaxo: '>=5.20'
     php:
         version: '>=8.3'
+
+console_commands:
+    'roadie:generate-icon-manifest': '\Yakamara\Roadie\Console\GenerateIconManifestCommand'
+    'roadie:generate-component-imports': '\Yakamara\Roadie\Console\GenerateComponentImportsCommand'
