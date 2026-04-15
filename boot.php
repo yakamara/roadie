@@ -76,6 +76,7 @@ if (rex_addon::get('media_manager')->isAvailable()) {
     rex_extension::register('MEDIA_MANAGER_FILTERSET', rex_effect_roadie_responsive::handle(...), rex_extension::EARLY);
 }
 
+rex_yform::addTemplatePath($addon->getPath('ytemplates'));
 /*
 if (!rex::isBackend()) {
     rex_extension::register('ROADIE_SECTION_REPLACE_PLACEHOLDER', Section::replace(...));
