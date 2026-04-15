@@ -24,7 +24,6 @@ use Yakamara\Roadie\Component\Icon\Icon;
 final class Listbox extends Component
 {
     public function __construct(
-
         public string $trigger,
 
         /**

@@ -2,7 +2,7 @@
 
 namespace Yakamara\Roadie\Widget;
 
-use rex_escape;
+use function array_key_exists;
 
 class ColorPicker
 {
@@ -94,9 +94,9 @@ class ColorPicker
     private static function renderSwatch(string $key, string $name, ?string $color, string $currentValue): string
     {
         $escapedName = rex_escape($name, 'html_attr');
-        $pressed     = $currentValue === $key ? 'true' : 'false';
-        $class       = 'colorpicker-swatch' . ('transparent' === $key ? ' colorpicker-swatch--transparent' : '');
-        $style       = $color !== null ? ' style="--swatch-color: ' . rex_escape($color, 'html_attr') . '"' : '';
+        $pressed = $currentValue === $key ? 'true' : 'false';
+        $class = 'colorpicker-swatch' . ('transparent' === $key ? ' colorpicker-swatch--transparent' : '');
+        $style = null !== $color ? ' style="--swatch-color: ' . rex_escape($color, 'html_attr') . '"' : '';
 
         return '<button type="button"'
             . ' class="' . $class . '"'

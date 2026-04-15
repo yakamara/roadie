@@ -5,8 +5,6 @@ namespace Yakamara\Roadie\Icons;
 use rex_file;
 use rex_path;
 
-use function rex_escape;
-
 class IconRegistry
 {
     /**
@@ -17,6 +15,9 @@ class IconRegistry
     private static string $defaultLibrary = 'default';
     private static string $iconsDirectory = '';
     private static ?string $metaFile = null;
+
+    /** @var array<string, mixed>|null */
+    private static ?array $manifest = null;
 
     public static function setDefaultLibrary(string $library): void
     {
@@ -48,9 +49,6 @@ class IconRegistry
         return self::$metaFile;
     }
 
-    /** @var array<string, mixed>|null */
-    private static ?array $manifest = null;
-
     /**
      * Gibt alle Libraries mit ihren Icons zurück.
      *
@@ -66,11 +64,11 @@ class IconRegistry
      *
      * @param string|null $library Library-Name, null für Default-Library
      * @param string      $name    Icon-Name
-     * @return array{name: string, label: string, keywords: string[], svg: string}|null
+     * @return array{name: string, label: string, keywords: array<string>, svg: string}|null
      */
     public static function get(?string $library, string $name): ?array
     {
-        $manifest    = self::loadManifest();
+        $manifest = self::loadManifest();
         $libraryName = $library ?? $manifest['defaultLibrary'] ?? self::$defaultLibrary;
 
         foreach ($manifest['libraries'] ?? [] as $lib) {
@@ -106,14 +104,14 @@ class IconRegistry
 
     /**
      * Erzeugt den gespeicherten Wert aus Library + Name.
-     * library=null → nur Name, sonst → "library:name"
+     * library=null → nur Name, sonst → "library:name".
      */
     public static function buildValue(?string $library, string $name): string
     {
-        $manifest       = self::loadManifest();
+        $manifest = self::loadManifest();
         $defaultLibrary = $manifest['defaultLibrary'] ?? self::$defaultLibrary;
 
-        if ($library === null || $library === $defaultLibrary) {
+        if (null === $library || $library === $defaultLibrary) {
             return $name;
         }
 
@@ -133,9 +131,9 @@ class IconRegistry
         }
 
         $parsed = self::parseValue($value);
-        $icon   = self::get($parsed['library'], $parsed['name']);
+        $icon = self::get($parsed['library'], $parsed['name']);
 
-        if ($icon === null) {
+        if (null === $icon) {
             return '';
         }
 
@@ -147,14 +145,14 @@ class IconRegistry
     /** @return array<string, mixed> */
     private static function loadManifest(): array
     {
-        if (self::$manifest !== null) {
+        if (null !== self::$manifest) {
             return self::$manifest;
         }
 
         $path = rex_path::addonData('roadie', 'icons.json');
         $json = rex_file::get($path);
 
-        if ($json === null) {
+        if (null === $json) {
             self::$manifest = [];
             return self::$manifest;
         }

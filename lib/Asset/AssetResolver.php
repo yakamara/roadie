@@ -9,6 +9,8 @@ namespace Yakamara\Roadie\Asset;
 use rex_file;
 use rex_path;
 
+use const PHP_URL_PATH;
+
 final class AssetResolver
 {
     private string $buildPath;

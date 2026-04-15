@@ -2,12 +2,23 @@
 
 namespace Yakamara\Roadie\Console;
 
+use RecursiveCallbackFilterIterator;
+use RecursiveDirectoryIterator;
+use RecursiveIteratorIterator;
 use rex_addon;
 use rex_console_command;
 use rex_file;
 use rex_path;
+use SplFileInfo;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+
+use function count;
+use function dirname;
+use function in_array;
+
+use const GLOB_ONLYDIR;
+use const PATHINFO_EXTENSION;
 
 class GenerateComponentImportsCommand extends rex_console_command
 {
@@ -39,17 +50,39 @@ class GenerateComponentImportsCommand extends rex_console_command
 
         $availableWa = array_flip(array_filter(
             scandir($waComponentsDir),
-            fn($d) => $d !== '.' && $d !== '..' && is_dir($waComponentsDir . '/' . $d),
+            static fn ($d) => '.' !== $d && '..' !== $d && is_dir($waComponentsDir . '/' . $d),
         ));
 
         // Alle Verzeichnisse scannen
         $allWaTags = [];
         $allComponentFolders = [];
+        $usesYform = false;
 
         foreach ($scanDirs as $dir) {
-            ['waTags' => $waTags, 'componentFolders' => $componentFolders] = $this->scanDir($dir, $componentDir);
-            foreach ($waTags as $tag => $_) $allWaTags[$tag] = true;
-            foreach ($componentFolders as $folder => $_) $allComponentFolders[$folder] = true;
+            ['waTags' => $waTags, 'componentFolders' => $componentFolders, 'usesYform' => $yform] = $this->scanDir($dir, $componentDir);
+            foreach ($waTags as $tag => $_) {
+                $allWaTags[$tag] = true;
+            }
+            foreach ($componentFolders as $folder => $_) {
+                $allComponentFolders[$folder] = true;
+            }
+            if ($yform) {
+                $usesYform = true;
+            }
+        }
+
+        // YForm-Templates scannen, wenn Formulare genutzt werden
+        if ($usesYform) {
+            $ytemplateDirs = glob(rex_path::src('addons/*/ytemplates/roadie'), GLOB_ONLYDIR) ?: [];
+            foreach ($ytemplateDirs as $dir) {
+                ['waTags' => $waTags, 'componentFolders' => $componentFolders] = $this->scanDir($dir, $componentDir);
+                foreach ($waTags as $tag => $_) {
+                    $allWaTags[$tag] = true;
+                }
+                foreach ($componentFolders as $folder => $_) {
+                    $allComponentFolders[$folder] = true;
+                }
+            }
         }
 
         ksort($allWaTags);
@@ -90,7 +123,7 @@ class GenerateComponentImportsCommand extends rex_console_command
 
             if ($hasMainScript || $hasStyles) {
                 if ($hasStyles) {
-                    $scssFiles = array_filter(scandir($stylesDir), fn($f) => str_ends_with($f, '.scss'));
+                    $scssFiles = array_filter(scandir($stylesDir), static fn ($f) => str_ends_with($f, '.scss'));
                     sort($scssFiles);
                     foreach ($scssFiles as $file) {
                         $scssImports[] = $this->relImport($outputPath, "{$stylesDir}/{$file}");
@@ -102,7 +135,7 @@ class GenerateComponentImportsCommand extends rex_console_command
             } elseif (is_dir($assetsDir)) {
                 $assetFiles = array_filter(
                     scandir($assetsDir),
-                    fn($f) => in_array(pathinfo($f, PATHINFO_EXTENSION), ['js', 'css'], true),
+                    static fn ($f) => in_array(pathinfo($f, PATHINFO_EXTENSION), ['js', 'css'], true),
                 );
                 sort($assetFiles);
                 foreach ($assetFiles as $file) {
@@ -113,12 +146,16 @@ class GenerateComponentImportsCommand extends rex_console_command
 
         if ($scssImports) {
             $lines[] = '';
-            foreach ($scssImports as $imp) $lines[] = "import '{$imp}';";
+            foreach ($scssImports as $imp) {
+                $lines[] = "import '{$imp}';";
+            }
         }
 
         if ($assetImports) {
             $lines[] = '';
-            foreach ($assetImports as $imp) $lines[] = "import '{$imp}';";
+            foreach ($assetImports as $imp) {
+                $lines[] = "import '{$imp}';";
+            }
         }
 
         // Projektspezifische Komponenten
@@ -154,6 +191,9 @@ class GenerateComponentImportsCommand extends rex_console_command
         rex_file::put($outputPath, implode("\n", $lines));
 
         $output->writeln('<info>Generated ' . $outputPath . '</info>');
+        if ($usesYform) {
+            $output->writeln('  YForm templates: scanned (' . count($ytemplateDirs) . ' dir(s))');
+        }
         $output->writeln('  WA (' . count($waImported) . '): ' . (implode(', ', $waImported) ?: '—'));
         if ($waSkipped) {
             $output->writeln('<comment>  Skipped WA (not in package): ' . implode(', ', $waSkipped) . '</comment>');
@@ -173,15 +213,16 @@ class GenerateComponentImportsCommand extends rex_console_command
     {
         $waTags = [];
         $componentFolders = [];
+        $usesYform = false;
 
         if (!is_dir($dir)) {
-            return ['waTags' => $waTags, 'componentFolders' => $componentFolders];
+            return ['waTags' => $waTags, 'componentFolders' => $componentFolders, 'usesYform' => $usesYform];
         }
 
-        $iterator = new \RecursiveIteratorIterator(
-            new \RecursiveCallbackFilterIterator(
-                new \RecursiveDirectoryIterator($dir, \RecursiveDirectoryIterator::SKIP_DOTS),
-                static fn(\SplFileInfo $f) => !$f->isDir() || !in_array($f->getFilename(), ['node_modules', 'vendor'], true),
+        $iterator = new RecursiveIteratorIterator(
+            new RecursiveCallbackFilterIterator(
+                new RecursiveDirectoryIterator($dir, RecursiveDirectoryIterator::SKIP_DOTS),
+                static fn (SplFileInfo $f) => !$f->isDir() || !in_array($f->getFilename(), ['node_modules', 'vendor'], true),
             ),
         );
 
@@ -194,45 +235,62 @@ class GenerateComponentImportsCommand extends rex_console_command
 
             // Direkte wa-*-Tags
             if (preg_match_all('/<(wa-[a-z][a-z0-9-]*)/', $content, $m)) {
-                foreach ($m[1] as $tag) $waTags[$tag] = true;
+                foreach ($m[1] as $tag) {
+                    $waTags[$tag] = true;
+                }
             }
 
-            // PHP-use-Statements → Roadie-Komponenten
-            if ($file->getExtension() === 'php'
-                && preg_match_all('/use\s+Yakamara\\\\Roadie\\\\Component\\\\([A-Za-z\\\\]+)\s*;/', $content, $useMatches)
-            ) {
-                foreach ($useMatches[1] as $classPath) {
-                    $parts = explode('\\', $classPath);
-                    if (count($parts) < 2) continue;
+            if ('php' === $file->getExtension()) {
+                // YForm-Nutzung erkennen
+                if (str_contains($content, 'rex_yform')) {
+                    $usesYform = true;
+                }
 
-                    $subfolder = $parts[count($parts) - 2];
-                    $className = $parts[count($parts) - 1];
-                    $componentFolders[$subfolder] = true;
+                // PHP-use-Statements → Roadie-Komponenten
+                if (preg_match_all('/use\s+Yakamara\\\\Roadie\\\\Component\\\\([A-Za-z\\\\]+)\s*;/', $content, $useMatches)) {
+                    foreach ($useMatches[1] as $classPath) {
+                        $parts = explode('\\', $classPath);
+                        if (count($parts) < 2) {
+                            continue;
+                        }
 
-                    $tplPath = "{$componentDir}/{$subfolder}/templates/{$className}.php";
-                    if (!file_exists($tplPath)) continue;
+                        $subfolder = $parts[count($parts) - 2];
+                        $className = $parts[count($parts) - 1];
+                        $componentFolders[$subfolder] = true;
 
-                    if (preg_match_all('/<(wa-[a-z][a-z0-9-]*)/', file_get_contents($tplPath), $tplMatches)) {
-                        foreach ($tplMatches[1] as $tag) $waTags[$tag] = true;
+                        $tplPath = "{$componentDir}/{$subfolder}/templates/{$className}.php";
+                        if (!file_exists($tplPath)) {
+                            continue;
+                        }
+
+                        if (preg_match_all('/<(wa-[a-z][a-z0-9-]*)/', file_get_contents($tplPath), $tplMatches)) {
+                            foreach ($tplMatches[1] as $tag) {
+                                $waTags[$tag] = true;
+                            }
+                        }
                     }
                 }
             }
         }
 
-        return ['waTags' => $waTags, 'componentFolders' => $componentFolders];
+        return ['waTags' => $waTags, 'componentFolders' => $componentFolders, 'usesYform' => $usesYform];
     }
 
     private function findProjectComponents(string $dir): array
     {
         $results = [];
-        if (!is_dir($dir)) return $results;
+        if (!is_dir($dir)) {
+            return $results;
+        }
 
-        $files = array_filter(scandir($dir), fn($f) => str_ends_with($f, '.js') && $f !== 'index.js');
+        $files = array_filter(scandir($dir), static fn ($f) => str_ends_with($f, '.js') && 'index.js' !== $f);
         sort($files);
 
         foreach ($files as $file) {
             $content = file_get_contents("{$dir}/{$file}");
-            if (!str_contains($content, 'static componentName') || !str_contains($content, 'export default class')) continue;
+            if (!str_contains($content, 'static componentName') || !str_contains($content, 'export default class')) {
+                continue;
+            }
             if (preg_match('/export default class (\w+)/', $content, $m)) {
                 $results[] = ['className' => $m[1], 'scriptFile' => "{$dir}/{$file}"];
             }

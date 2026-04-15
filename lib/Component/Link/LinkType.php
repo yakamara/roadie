@@ -35,7 +35,7 @@ enum LinkType
             self::Sms => preg_replace('/[^0-9]+/', '', $href),
             default => $href,
         };
-        return $this->getProtocol().$href;
+        return $this->getProtocol() . $href;
     }
 
     public function getAttributes(): array

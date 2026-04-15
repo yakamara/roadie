@@ -95,7 +95,7 @@ final class Asset
                 );
 
                 $mergedClass = trim(($existingClass ? $existingClass . ' ' : '') . ($class ?? ''));
-                $classAttr = $mergedClass !== '' ? ' class="' . rex_escape($mergedClass) . '"' : '';
+                $classAttr = '' !== $mergedClass ? ' class="' . rex_escape($mergedClass) . '"' : '';
 
                 return '<svg' . $classAttr . ' ' . $a11yAttrs . ' focusable="false"' . $existingAttrs . '>';
             },

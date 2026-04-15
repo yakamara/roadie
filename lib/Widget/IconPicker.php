@@ -22,14 +22,14 @@ class IconPicker
      */
     public static function widget(string $name, string $currentValue = ''): string
     {
-        $escapedName  = rex_escape($name, 'html_attr');
+        $escapedName = rex_escape($name, 'html_attr');
         $escapedValue = rex_escape($currentValue, 'html_attr');
 
-        $previewSvg   = $currentValue ? IconRegistry::renderPreview($currentValue) : '';
+        $previewSvg = $currentValue ? IconRegistry::renderPreview($currentValue) : '';
         $previewLabel = $currentValue
             ? rex_escape(IconRegistry::parseValue($currentValue)['name'])
             : 'Kein Icon gewählt';
-        $clearHidden  = $currentValue ? '' : ' hidden';
+        $clearHidden = $currentValue ? '' : ' hidden';
 
         $html =
             '<div class="iconpicker">
@@ -60,18 +60,18 @@ class IconPicker
         $librariesHtml = '';
 
         foreach (IconRegistry::getLibraries() as $library) {
-            $libraryName  = $library['name'];
-            $isDefault    = $library['isDefault'];
+            $libraryName = $library['name'];
+            $isDefault = $library['isDefault'];
             $libraryLabel = rex_escape($isDefault ? 'Standard' : $libraryName);
 
             $itemsHtml = '';
             foreach ($library['icons'] as $icon) {
-                $iconName     = $icon['name'];
-                $iconLabel    = rex_escape($icon['label']);
+                $iconName = $icon['name'];
+                $iconLabel = rex_escape($icon['label']);
                 $iconKeywords = rex_escape(implode(' ', array_merge([$icon['label']], $icon['keywords'])), 'html_attr');
-                $value        = IconRegistry::buildValue($isDefault ? null : $libraryName, $iconName);
+                $value = IconRegistry::buildValue($isDefault ? null : $libraryName, $iconName);
                 $escapedValue = rex_escape($value, 'html_attr');
-                $escapedName  = rex_escape($iconName, 'html_attr');
+                $escapedName = rex_escape($iconName, 'html_attr');
                 $svgWithClass = str_replace('<svg', '<svg class="iconpicker-svg"', $icon['svg']);
 
                 $itemsHtml .= '<button type="button"'
@@ -91,26 +91,26 @@ class IconPicker
         }
 
         return <<<HTML
-        <div class="iconpicker-modal" hidden>
-            <div class="iconpicker-modal-backdrop"></div>
-            <div class="iconpicker-modal-dialog">
-                <div class="iconpicker-modal-header">
-                    <h4 class="iconpicker-modal-title">Icon auswählen</h4>
-                    <button type="button" class="iconpicker-modal-close" aria-label="Schließen">&#x2715;</button>
-                </div>
-                <div class="iconpicker-modal-body">
-                    <div class="iconpicker-search">
-                        <input type="search" class="form-control" placeholder="Icons suchen …" autocomplete="off">
+            <div class="iconpicker-modal" hidden>
+                <div class="iconpicker-modal-backdrop"></div>
+                <div class="iconpicker-modal-dialog">
+                    <div class="iconpicker-modal-header">
+                        <h4 class="iconpicker-modal-title">Icon auswählen</h4>
+                        <button type="button" class="iconpicker-modal-close" aria-label="Schließen">&#x2715;</button>
                     </div>
-                    <div class="iconpicker-libraries">
-                        {$librariesHtml}
+                    <div class="iconpicker-modal-body">
+                        <div class="iconpicker-search">
+                            <input type="search" class="form-control" placeholder="Icons suchen …" autocomplete="off">
+                        </div>
+                        <div class="iconpicker-libraries">
+                            {$librariesHtml}
+                        </div>
                     </div>
-                </div>
-                <div class="iconpicker-modal-footer">
-                    <button type="button" class="btn btn-default iconpicker-modal-cancel">Abbrechen</button>
+                    <div class="iconpicker-modal-footer">
+                        <button type="button" class="btn btn-default iconpicker-modal-cancel">Abbrechen</button>
+                    </div>
                 </div>
             </div>
-        </div>
-        HTML;
+            HTML;
     }
 }

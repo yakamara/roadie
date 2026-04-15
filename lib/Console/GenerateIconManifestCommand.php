@@ -10,6 +10,13 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Yakamara\Roadie\Icons\IconRegistry;
 
+use function count;
+use function dirname;
+use function sprintf;
+
+use const JSON_PRETTY_PRINT;
+use const JSON_UNESCAPED_UNICODE;
+
 class GenerateIconManifestCommand extends rex_console_command
 {
     protected function configure(): void
@@ -38,7 +45,7 @@ class GenerateIconManifestCommand extends rex_console_command
         // Unterordner = Libraries
         $libraryNames = array_values(array_filter(
             scandir($iconsDir),
-            fn($d) => $d !== '.' && $d !== '..' && is_dir($iconsDir . '/' . $d),
+            static fn ($d) => '.' !== $d && '..' !== $d && is_dir($iconsDir . '/' . $d),
         ));
         sort($libraryNames);
 
@@ -52,7 +59,7 @@ class GenerateIconManifestCommand extends rex_console_command
 
         foreach ($libraryNames as $libraryName) {
             $dir = $iconsDir . '/' . $libraryName;
-            $files = array_values(array_filter(scandir($dir), fn($f) => str_ends_with($f, '.svg')));
+            $files = array_values(array_filter(scandir($dir), static fn ($f) => str_ends_with($f, '.svg')));
             sort($files);
 
             $icons = [];
@@ -91,7 +98,7 @@ class GenerateIconManifestCommand extends rex_console_command
             '<info>Icon-Manifest generiert: %d Icons in %d Librar%s → %s</info>',
             $total,
             count($libraries),
-            count($libraries) === 1 ? 'y' : 'ies',
+            1 === count($libraries) ? 'y' : 'ies',
             $outputPath,
         ));
 

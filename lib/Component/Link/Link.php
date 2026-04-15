@@ -2,8 +2,6 @@
 
 namespace Yakamara\Roadie\Component\Link;
 
-use Yakamara\Roadie\Component\Link\LinkTarget;
-use Yakamara\Roadie\Component\Link\LinkType;
 use Yakamara\Roadie\Component\Component;
 use Yakamara\Roadie\Component\HtmlAttributes;
 

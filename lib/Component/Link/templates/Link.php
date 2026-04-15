@@ -1,7 +1,7 @@
 <?php
 
-use Yakamara\Roadie\Component\Link\Link;
 use Yakamara\Roadie\Component\Component;
+use Yakamara\Roadie\Component\Link\Link;
 
 /** @var Link $this */
 

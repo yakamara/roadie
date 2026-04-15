@@ -4,6 +4,9 @@ namespace Yakamara\Roadie\Util;
 
 use Symfony\Component\Uid\Uuid;
 
+use function chr;
+use function ord;
+
 final class Aria
 {
     private static string $lastId = '';

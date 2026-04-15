@@ -18,6 +18,6 @@ final class TocMenu
 
     public static function isEmpty(): bool
     {
-        return self::$items === [];
+        return [] === self::$items;
     }
 }

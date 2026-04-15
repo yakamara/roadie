@@ -4,12 +4,12 @@ namespace Yakamara\Roadie\MediaPool;
 
 use rex;
 use rex_clang;
-use rex_escape;
 use rex_extension_point;
 use rex_file;
 use rex_media;
-use rex_post;
 use rex_sql;
+
+use function count;
 
 class MediaExtension
 {
@@ -37,35 +37,34 @@ class MediaExtension
             foreach ($clangs as $clang) {
                 $suffix = $clang->getId() >= 2 ? '_' . $clang->getId() : '';
                 $tabId = 'roadie-media-lang-' . $clang->getId();
-                $tabItems[] = '<wa-tab panel="'.$tabId.'">' . rex_escape($clang->getName()) . '</wa-tab>';
+                $tabItems[] = '<wa-tab panel="' . $tabId . '">' . rex_escape($clang->getName()) . '</wa-tab>';
                 $tabPanels[] = '
-                    <wa-tab-panel name="'.$tabId.'">
+                    <wa-tab-panel name="' . $tabId . '">
                         <div class="wa-stack">
-                            <wa-input label="Alternativtext" name="med_alt' . $suffix . '" value="'.rex_escape((string) ($media->getValue('med_alt' . $suffix) ?: '')).'"></wa-input>
-                            <wa-textarea label="Bildunterschrift" name="med_caption' . $suffix . '" value="'.rex_escape((string) ($media->getValue('med_caption' . $suffix) ?: '')).'"></wa-textarea>
+                            <wa-input label="Alternativtext" name="med_alt' . $suffix . '" value="' . rex_escape((string) ($media->getValue('med_alt' . $suffix) ?: '')) . '"></wa-input>
+                            <wa-textarea label="Bildunterschrift" name="med_caption' . $suffix . '" value="' . rex_escape((string) ($media->getValue('med_caption' . $suffix) ?: '')) . '"></wa-textarea>
                         </div>
                     </wa-tab-panel>';
-
             }
-            $html .= '<wa-tab-group>'.implode('', $tabItems).' '.implode('', $tabPanels).'</wa-tab-group>';
+            $html .= '<wa-tab-group>' . implode('', $tabItems) . ' ' . implode('', $tabPanels) . '</wa-tab-group>';
         } else {
             $clang = current($clangs);
             $suffix = $clang->getId() >= 2 ? '_' . $clang->getId() : '';
 
             $html .=
                 '<div class="wa-stack">
-                    <wa-input label="Alternativtext" name="med_alt' . $suffix . '" value="'.rex_escape((string) ($media->getValue('med_alt' . $suffix) ?: '')).'"></wa-input>
-                    <wa-textarea label="Bildunterschrift" name="med_caption' . $suffix . '" value="'.rex_escape((string) ($media->getValue('med_caption' . $suffix) ?: '')).'"></wa-textarea>
+                    <wa-input label="Alternativtext" name="med_alt' . $suffix . '" value="' . rex_escape((string) ($media->getValue('med_alt' . $suffix) ?: '')) . '"></wa-input>
+                    <wa-textarea label="Bildunterschrift" name="med_caption' . $suffix . '" value="' . rex_escape((string) ($media->getValue('med_caption' . $suffix) ?: '')) . '"></wa-textarea>
                 </div>';
         }
 
-//        $html .= '</fieldset>';
+        //        $html .= '</fieldset>';
 
         $html =
             '<dl class="rex-form-group form-group">
                 <dt><label>Alternativtext &amp; Bildunterschrift</label></dt>
                 <dd style="padding-block-start: var(--wa-space-m)">
-                    <div class="wa-stack">'.$html.'</div>
+                    <div class="wa-stack">' . $html . '</div>
                 </dd>
             </dl>
             <script>
@@ -93,7 +92,7 @@ class MediaExtension
     {
         foreach ($clangs as $clang) {
             $suffix = $clang->getId() >= 2 ? '_' . $clang->getId() : '';
-            if (trim((string) ($media->getValue('med_alt' . $suffix) ?: '')) === '') {
+            if ('' === trim((string) ($media->getValue('med_alt' . $suffix) ?: ''))) {
                 return true;
             }
         }
@@ -102,7 +101,7 @@ class MediaExtension
 
     public static function extendListThumbnail(rex_extension_point $ep): string
     {
-        /** @var \rex_media $media */
+        /** @var rex_media $media */
         $media = $ep->getParam('media');
 
         if (!rex_media::isImageType(rex_file::extension($media->getFileName()))) {
