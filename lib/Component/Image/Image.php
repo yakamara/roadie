@@ -228,22 +228,30 @@ final class Image extends Component
 
     public function render(): string
     {
-        if ($this->resolutions instanceof ImageResolution) {
-            $this->resolutions = ImageResolutionValues::getValue($this->resolutions);
-        }
+        // Save original state to allow idempotent rendering
+        $originalImageAttributes = clone $this->imageAttributes;
+        $originalCaption = $this->caption;
+        $originalCopyright = $this->copyright;
+        $originalFigure = $this->figure;
 
-        sort($this->resolutions);
+        // Reset sources so repeated render() calls don't accumulate entries
+        $this->sources = [];
+
+        // Work with local copies to avoid mutating constructor state
+        $resolutions = $this->resolutions instanceof ImageResolution
+            ? ImageResolutionValues::getValue($this->resolutions)
+            : $this->resolutions;
+
+        sort($resolutions);
 
         $motifs = [];
         foreach ($this->motifs as $motif) {
-            //            $motifs[$motif->fromBreakpoint->value] = $motif;
             $motifs[ImageBreakpointValues::getValue($motif->fromBreakpoint)] = $motif;
         }
         krsort($motifs);
-        $this->motifs = $motifs;
 
-        if (count($this->motifs) && is_array($this->resolutions)) {
-            foreach ($this->resolutions as $resolution) {
+        if (count($motifs) && is_array($resolutions)) {
+            foreach ($resolutions as $resolution) {
                 [$value, $unit] = $this->parseSrcsetSize($resolution);
 
                 if ('x' === $unit) {
@@ -252,7 +260,13 @@ final class Image extends Component
             }
         }
 
-        foreach ($this->motifs as $motif) {
+        foreach ($motifs as $motif) {
+            $motifResolutions = match(true) {
+                $motif->resolutions instanceof ImageResolution => ImageResolutionValues::getValue($motif->resolutions),
+                is_array($motif->resolutions) => $motif->resolutions,
+                default => $resolutions,
+            };
+
             foreach ($this->formats as $format) {
                 $imageName = $this->imageName;
                 if ($format->value !== $this->fileMimeType) {
@@ -260,9 +274,9 @@ final class Image extends Component
                 }
 
                 $this->addSource(
-                    empty($this->resolutions)
+                    empty($motifResolutions)
                         ? [$this->getUrl($imageName, null, $motif->mediaManagerType)]
-                        : $this->getSrcset($imageName, $this->resolutions, $motif->mediaManagerType),
+                        : $this->getSrcset($imageName, $motifResolutions, $motif->mediaManagerType),
                     $format->value,
                     $motif->sizes,
                     ImageBreakpointValues::getValue($motif->fromBreakpoint),
@@ -276,9 +290,9 @@ final class Image extends Component
             }
 
             $this->addSource(
-                empty($this->resolutions)
+                empty($resolutions)
                     ? [$this->getUrl($this->imageName . '.' . strtolower($format->name), null, $this->mediaManagerType)]
-                    : $this->getSrcset($this->imageName . '.' . strtolower($format->name), $this->resolutions, $this->mediaManagerType),
+                    : $this->getSrcset($this->imageName . '.' . strtolower($format->name), $resolutions, $this->mediaManagerType),
                 $format->value,
                 $this->sizes,
             );
@@ -288,19 +302,13 @@ final class Image extends Component
             $this->imageAttributes->set('sizes', $this->sizes);
         }
 
-        if (count($this->resolutions)) {
-            $srcset = $this->getSrcset($this->imageName, $this->resolutions, $this->mediaManagerType);
+        if (count($resolutions)) {
+            $srcset = $this->getSrcset($this->imageName, $resolutions, $this->mediaManagerType);
 
             $this->imageAttributes->set('src', reset($srcset));
             $this->imageAttributes->set('srcset', implode(', ', $srcset));
-            //            [$width, $height] = $this->media->getDimensionsByMediaManagerType($this->mediaManagerType);
-            //            $this->imageAttributes->set('width', $width);
-            //            $this->imageAttributes->set('height', $height);
         } else {
             $this->imageAttributes->set('src', $this->getUrl($this->imageName, null, $this->mediaManagerType));
-            //            [$width, $height] = $this->media->getDimensions();
-            //            $this->imageAttributes->set('width', $width);
-            //            $this->imageAttributes->set('height', $height);
         }
 
         /** @ToDo lowQualityPlaceholder
@@ -314,22 +322,25 @@ final class Image extends Component
         $this->imageAttributes->set('alt', $this->media->getAlt());
         $this->imageAttributes->set('loading', 'lazy');
 
-        // Get caption from Media object
-        if (true === $this->caption) {
-            $this->caption = $this->media->getCaption();
-        }
+        // Resolve caption/copyright from Media object if set to true
+        $this->caption = true === $this->caption ? $this->media->getCaption() : $this->caption;
+        $this->copyright = true === $this->copyright ? $this->media->getCopyright() : $this->copyright;
 
-        // Get copyright from Media object
-        if (true === $this->copyright) {
-            $this->copyright = $this->media->getCopyright();
-        }
-
-        // If caption or copyright is available, then definitely output a figure tag.
-        if ('' !== $this->caption || '' !== $this->copyright) {
+        // Enable figure only when caption or copyright is a non-empty string
+        if ((is_string($this->caption) && '' !== $this->caption) || (is_string($this->copyright) && '' !== $this->copyright)) {
             $this->figure = true;
         }
 
-        return parent::render();
+        $result = parent::render();
+
+        // Restore original state for idempotent rendering
+        $this->sources = [];
+        $this->imageAttributes = $originalImageAttributes;
+        $this->caption = $originalCaption;
+        $this->copyright = $originalCopyright;
+        $this->figure = $originalFigure;
+
+        return $result;
     }
 
     protected function getPath(): string

@@ -10,5 +10,8 @@ class ImageMotif
         public ImageBreakpoint $fromBreakpoint,
 
         public ?string $sizes = null,
+
+        /** Resolutions for this breakpoint; null falls back to the global resolutions of the Image component. */
+        public array|ImageResolution|null $resolutions = null,
     ) {}
 }

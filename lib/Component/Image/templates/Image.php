@@ -20,11 +20,11 @@ use Yakamara\Roadie\Component\Image\Image;
     <?php endif ?>
     <?php if ($this->copyright && '' !== $this->copyright): ?>
         <footer>
-            <small>&copy; <?= $this->copyright ?></small>
+            <small>&copy; <?= rex_escape($this->copyright) ?></small>
         </footer>
     <?php endif ?>
     <?php if ($this->caption && '' !== $this->caption): ?>
-        <figcaption><?= $this->caption ?></figcaption>
+        <figcaption><?= rex_escape($this->caption) ?></figcaption>
     <?php endif ?>
 <?php if ($this->figure): ?>
     </figure>
