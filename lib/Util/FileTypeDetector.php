@@ -2,7 +2,6 @@
 
 namespace Yakamara\Roadie\Util;
 
-use InvalidArgumentException;
 use rex_file;
 use rex_path;
 
@@ -24,15 +23,20 @@ final class FileTypeDetector
         'svg' => ['image/svg+xml'],
     ];
 
+    private bool $exists;
+
     public function __construct(
         public string $filePath,
     ) {
         if ($this->filePath === basename($this->filePath)) {
             $this->filePath = rex_path::media($this->filePath);
         }
-        if (!is_file($this->filePath) || !is_readable($this->filePath)) {
-            throw new InvalidArgumentException('File does not exist or is not readable: ' . $this->filePath);
-        }
+        $this->exists = is_file($this->filePath) && is_readable($this->filePath);
+    }
+
+    public function exists(): bool
+    {
+        return $this->exists;
     }
 
     /**
@@ -71,11 +75,17 @@ final class FileTypeDetector
 
     public function getMimeType(): string
     {
+        if (!$this->exists) {
+            return '';
+        }
         return rex_file::mimeType($this->filePath);
     }
 
     private function matchesType(string $type): bool
     {
+        if (!$this->exists) {
+            return false;
+        }
         $extension = $this->getExtension();
         $mimeType = $this->getMimeType();
         return ($extension && in_array($extension, self::EXTENSIONS[$type], true)) && ($mimeType && in_array($mimeType, self::MIME_TYPES[$type], true));
