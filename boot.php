@@ -71,7 +71,6 @@ if (rex::isBackend() && rex::getUser()) {
 }
 
 if (rex_addon::get('media_manager')->isAvailable()) {
-    rex_media_manager::deleteCache();
     rex_media_manager::addEffect(rex_effect_roadie_responsive::class);
     rex_extension::register('MEDIA_MANAGER_FILTERSET', rex_effect_roadie_responsive::handle(...), rex_extension::EARLY);
 }
