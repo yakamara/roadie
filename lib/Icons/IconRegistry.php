@@ -19,6 +19,22 @@ class IconRegistry
     /** @var array<string, mixed>|null */
     private static ?array $manifest = null;
 
+    /** @var array<string, array{name: string, library: ?string}> */
+    private static array $aliases = [];
+
+    public static function alias(string $alias, string $name, ?string $library = null): void
+    {
+        self::$aliases[$alias] = ['name' => $name, 'library' => $library];
+    }
+
+    /**
+     * @return array{name: string, library: ?string}
+     */
+    public static function resolveAlias(string $name): array
+    {
+        return self::$aliases[$name] ?? ['name' => $name, 'library' => null];
+    }
+
     public static function setDefaultLibrary(string $library): void
     {
         self::$defaultLibrary = $library;

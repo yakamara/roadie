@@ -4,6 +4,7 @@ namespace Yakamara\Roadie\Component\Icon;
 
 use Yakamara\Roadie\Component\Component;
 use Yakamara\Roadie\Component\HtmlAttributes;
+use Yakamara\Roadie\Icons\IconRegistry;
 
 /**
  * @see src/addons/roadie/lib/Component/Icon/templates/Icon.php
@@ -74,7 +75,15 @@ final class Icon extends Component
         public bool $autoWidth = false,
 
         public HtmlAttributes $attributes = new HtmlAttributes(),
-    ) {}
+    ) {
+        if (null !== $this->name) {
+            $resolved = IconRegistry::resolveAlias($this->name);
+            $this->name = $resolved['name'];
+            if (null === $this->library && null !== $resolved['library']) {
+                $this->library = $resolved['library'];
+            }
+        }
+    }
 
     protected function getPath(): string
     {
