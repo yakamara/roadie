@@ -17,8 +17,7 @@
     display: flex;
     align-items: center;
     gap: 8px;
-    padding-left: 1rem;
-    padding-right: 1rem;
+    padding: 8px 1rem 7px 1rem;
     background: #e9ecf2;
     border: 1px solid #c1c9d4;
     border-right: 0;
