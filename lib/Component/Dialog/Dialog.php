@@ -4,6 +4,7 @@ namespace Yakamara\Roadie\Component\Dialog;
 
 use Yakamara\Roadie\Component\Component;
 use Yakamara\Roadie\Component\HtmlAttributes;
+use Yakamara\Roadie\Component\Icon\Icon;
 
 /**
  * @see src/addons/roadie/lib/Component/Dialog/templates/Dialog.php
@@ -60,6 +61,11 @@ final class Dialog extends Component
          * The dialog's footer, usually one or more buttons.
          */
         public string|Component|null $footer = null,
+
+        /**
+         * Custom icon for the close button. Replaces the default system icon.
+         */
+        public ?Icon $closeIcon = null,
 
         public HtmlAttributes $attributes = new HtmlAttributes(),
     ) {}
