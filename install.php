@@ -13,4 +13,5 @@ foreach (rex_clang::getAll() as $clang) {
 
 $table
     ->ensureColumn(new rex_sql_column('med_is_decorative', 'tinyint(1)', false, '0'))
+    ->ensureColumn(new rex_sql_column('med_copyright', 'text', true))
     ->ensure();
