@@ -67,6 +67,14 @@ class MediaExtension
                     <div class="wa-stack">' . $html . '</div>
                 </dd>
             </dl>
+            <dl class="rex-form-group form-group">
+                <dt><label>Copyright</label></dt>
+                <dd>
+                    <div class="wa-stack">
+                        <wa-input name="med_copyright" value="' . rex_escape((string) ($media->getValue('med_copyright') ?: '')) . '"></wa-input>
+                    </div>
+                </dd>
+            </dl>
             <script>
             (() => {
                 const hint = document.getElementById("roadie-alt-hint");
@@ -141,6 +149,7 @@ class MediaExtension
         }
 
         $sql->setValue('med_is_decorative', rex_post('med_is_decorative', 'int', 0));
+        $sql->setValue('med_copyright', rex_post('med_copyright', 'string', ''));
         $sql->update();
     }
 }

@@ -16,15 +16,19 @@ use Yakamara\Roadie\Component\Image\Image;
             <img <?= $this->imageAttributes->toString() ?> />
         </picture>
     <?php else: ?>
-        <img <?= $this->imageAttributes->toString() ?> />
+        <img <?= $this->imageAttributes->toString() ?> <?= !$this->figure ? $this->attributes->toString() : '' ?> />
     <?php endif ?>
-    <?php if ($this->copyright && '' !== $this->copyright): ?>
-        <footer>
-            <small>&copy; <?= rex_escape($this->copyright) ?></small>
-        </footer>
-    <?php endif ?>
-    <?php if ($this->caption && '' !== $this->caption): ?>
-        <figcaption><?= rex_escape($this->caption) ?></figcaption>
+    <?php if (($this->caption && '' !== $this->caption) || ($this->copyright && '' !== $this->copyright)): ?>
+        <figcaption>
+            <?php if ($this->caption && '' !== $this->caption): ?>
+                <?= rex_escape($this->caption) ?>
+            <?php endif ?>
+            <?php if ($this->copyright && '' !== $this->copyright): ?>
+                <small class="copyright">
+                    <span class="copyright--symbol" aria-hidden="true">&copy;</span><span class="copyright--text"><?= rex_escape($this->copyright) ?></span>
+                </small>
+            <?php endif ?>
+        </figcaption>
     <?php endif ?>
 <?php if ($this->figure): ?>
     </figure>
