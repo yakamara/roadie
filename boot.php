@@ -2,6 +2,7 @@
 
 // use Yakamara\Roadie\Component\Image\LowQualityImagePlaceholder;
 use Yakamara\Roadie\Component\Template;
+use Yakamara\Roadie\Section\Section;
 use Yakamara\Roadie\MediaPool\MediaExtension;
 
 // use Yakamara\Roadie\View\Notification;
@@ -76,17 +77,17 @@ if (rex_addon::get('media_manager')->isAvailable()) {
 }
 
 rex_yform::addTemplatePath($addon->getPath('ytemplates'));
-/*
+
 if (!rex::isBackend()) {
     rex_extension::register('ROADIE_SECTION_REPLACE_PLACEHOLDER', Section::replace(...));
 
-    rex_extension::register('YREWRITE_SEO_TAGS', static function(rex_extension_point $ep) {
-        $subject = $ep->getSubject();
-        $subject[] = LowQualityImagePlaceholder::renderPreloads();
-        $ep->setSubject($subject);
-    });
+//    rex_extension::register('YREWRITE_SEO_TAGS', static function(rex_extension_point $ep) {
+//        $subject = $ep->getSubject();
+//        $subject[] = LowQualityImagePlaceholder::renderPreloads();
+//        $ep->setSubject($subject);
+//    });
 }
-
+/*
 if (rex::isBackend() && is_object(rex::getUser())) {
     rex_view::addCssFile($addon->getAssetsUrl('styles.css'));
     rex_view::addCssFile($addon->getAssetsUrl('roadie-notification/styles.css'));
