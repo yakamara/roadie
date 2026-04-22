@@ -150,6 +150,16 @@ class SliceManager
         return preg_replace('@<p>(<strong>)?(<br\s?\/?>)?(<\/strong>)?<\/p>@', '', $html);
     }
 
+    // Erhöht die Tiefe um eine Ebene (z.B. nach einer Modul-Überschrift)
+    public function descendDepth(rex_article_slice $slice): static
+    {
+        ++$this->currentDepth;
+        if ($slice->isOnline()) {
+            $this->persistState();
+        }
+        return $this;
+    }
+
     // Gibt die aktuelle Abschnittstiefe zurück
     public function getCurrentDepth(): int
     {
