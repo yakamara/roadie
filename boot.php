@@ -1,6 +1,10 @@
 <?php
 
 // use Yakamara\Roadie\Component\Image\LowQualityImagePlaceholder;
+use Yakamara\Roadie\ArticleUsage\ArticleKeyUsageChecker;
+use Yakamara\Roadie\ArticleUsage\ArticleSliceUsageChecker;
+use Yakamara\Roadie\ArticleUsage\ArticleUsageChecker;
+use Yakamara\Roadie\ArticleUsage\MetaInfoUsageChecker;
 use Yakamara\Roadie\Component\Template;
 use Yakamara\Roadie\Section\Section;
 use Yakamara\Roadie\MediaPool\MediaExtension;
@@ -64,6 +68,18 @@ Template::addDirectory($addon->getPath('lib/Component/Textarea/templates'));
 Template::addDirectory($addon->getPath('lib/Component/Tooltip/templates'));
 Template::addDirectory($addon->getPath('lib/Component/Tree/templates'));
 Template::addDirectory($addon->getPath('lib/Component/ZoomableFrame/templates'));
+
+
+
+if (rex::isBackend() && rex::getUser()) {
+    ArticleUsageChecker::addChecker(ArticleSliceUsageChecker::check(...));
+    ArticleUsageChecker::addChecker(MetaInfoUsageChecker::check(...));
+    ArticleUsageChecker::addChecker(ArticleKeyUsageChecker::check(...));
+
+    // ART_PRE_DELETED feuert sowohl beim Löschen eines Artikels als auch
+    // beim Löschen einer Kategorie (deleteCategory ruft _deleteArticle intern auf).
+    rex_extension::register('ART_PRE_DELETED', ArticleUsageChecker::handlePreDelete(...));
+}
 
 if (rex::isBackend() && rex::getUser()) {
     rex_extension::register('MEDIA_FORM_EDIT', MediaExtension::extendForm(...));
