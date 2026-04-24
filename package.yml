@@ -9,3 +9,14 @@ requires:
 console_commands:
     'roadie:generate-icon-manifest': '\Yakamara\Roadie\Console\GenerateIconManifestCommand'
     'roadie:generate-component-imports': '\Yakamara\Roadie\Console\GenerateComponentImportsCommand'
+    'roadie:article-key': '\Yakamara\Roadie\Article\ArticleKeyCommand'
+
+pages:
+    system/roadie:
+        title: Roadie
+        icon: rex-icon fa-cog
+        perm: admin[]
+        subpages:
+            article-keys:
+                title: Artikel-Keys
+                icon: rex-icon fa-link
