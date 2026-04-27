@@ -2,6 +2,10 @@
 
 namespace Yakamara\Roadie\ArticleUsage;
 
+use rex_api_exception;
+use rex_category;
+use rex_extension_point;
+
 /**
  * Prüft vor dem Löschen eines Artikels ob dieser noch referenziert wird.
  *
@@ -35,13 +39,13 @@ class ArticleUsageChecker
         return $usages;
     }
 
-    public static function handlePreDelete(\rex_extension_point $ep): void
+    public static function handlePreDelete(rex_extension_point $ep): void
     {
         $usages = self::check((int) $ep->getParam('id'));
         if ($usages) {
-            throw new \rex_api_exception(
+            throw new rex_api_exception(
                 'Der Artikel wird noch verwendet und kann nicht gelöscht werden:'
-                . '<ul><li>' . implode('</li><li>', array_map('rex_escape', $usages)) . '</li></ul>'
+                . '<ul><li>' . implode('</li><li>', array_map('rex_escape', $usages)) . '</li></ul>',
             );
         }
     }
@@ -51,7 +55,7 @@ class ArticleUsageChecker
      *
      * @return list<string>
      */
-    public static function checkCategory(\rex_category $category): array
+    public static function checkCategory(rex_category $category): array
     {
         $usages = [];
 

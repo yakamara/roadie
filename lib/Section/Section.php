@@ -6,6 +6,10 @@ use rex;
 use rex_extension_point;
 use rex_string;
 
+use function count;
+
+use const PREG_SET_ORDER;
+
 class Section
 {
     private const string PLACEHOLDER_OPEN = '{{{';
@@ -23,8 +27,8 @@ class Section
         public string $tag = 'div',
 
         public array $innerAttributes = [],
-    ){
-        $this->placeholder = self::PLACEHOLDER_PREFIX . rand(100, 999) . rand(100, 999);
+    ) {
+        $this->placeholder = self::PLACEHOLDER_PREFIX . random_int(100, 999) . random_int(100, 999);
         self::$instances[$this->placeholder] = $this;
     }
 
@@ -42,6 +46,7 @@ class Section
     {
         return $this->innerAttributes;
     }
+
     protected function getTag(): string
     {
         return $this->tag;
@@ -54,13 +59,13 @@ class Section
         }
 
         $attributes = array_merge_recursive(['class' => 'roadie-section'], $this->getAttributes());
-        return '<div' . rex_string::buildAttributes($attributes). '>' . self::PLACEHOLDER_OPEN . $this->placeholder . self::PLACEHOLDER_CLOSE . '</div>';
+        return '<div' . rex_string::buildAttributes($attributes) . '>' . self::PLACEHOLDER_OPEN . $this->placeholder . self::PLACEHOLDER_CLOSE . '</div>';
     }
 
     public static function replace(rex_extension_point $ep): void
     {
         $subject = $ep->getSubject();
-        preg_match_all('@(?<placeholder_with_tags>'.preg_quote(self::PLACEHOLDER_OPEN).'\s*(?<placeholder>'.self::PLACEHOLDER_PREFIX.'[0-9]{6})\s*'.preg_quote(self::PLACEHOLDER_CLOSE).')@', $subject, $matches, PREG_SET_ORDER);
+        preg_match_all('@(?<placeholder_with_tags>' . preg_quote(self::PLACEHOLDER_OPEN) . '\s*(?<placeholder>' . self::PLACEHOLDER_PREFIX . '[0-9]{6})\s*' . preg_quote(self::PLACEHOLDER_CLOSE) . ')@', $subject, $matches, PREG_SET_ORDER);
 
         if (0 === count($matches)) {
             return;

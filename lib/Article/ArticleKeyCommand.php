@@ -2,11 +2,15 @@
 
 namespace Yakamara\Roadie\Article;
 
+use BackedEnum;
+use rex_article;
+use rex_console_command;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use rex_console_command;
+
+use function count;
 
 class ArticleKeyCommand extends rex_console_command
 {
@@ -22,10 +26,10 @@ class ArticleKeyCommand extends rex_console_command
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         return match ($input->getArgument('action')) {
-            'list'   => $this->listKeys($output),
-            'set'    => $this->setKey($input, $output),
+            'list' => $this->listKeys($output),
+            'set' => $this->setKey($input, $output),
             'remove' => $this->removeKey($input, $output),
-            default  => $this->unknownAction($input->getArgument('action'), $output),
+            default => $this->unknownAction($input->getArgument('action'), $output),
         };
     }
 
@@ -65,7 +69,7 @@ class ArticleKeyCommand extends rex_console_command
     private function setKey(InputInterface $input, OutputInterface $output): int
     {
         $keyValue = $input->getArgument('key');
-        $id       = (int) $input->getArgument('id');
+        $id = (int) $input->getArgument('id');
 
         $key = $this->resolveCase((string) $keyValue, $output);
         if (!$key) {
@@ -77,7 +81,7 @@ class ArticleKeyCommand extends rex_console_command
             return self::FAILURE;
         }
 
-        $article = \rex_article::get($id);
+        $article = rex_article::get($id);
         if (!$article) {
             $output->writeln('<error>Artikel mit ID ' . $id . ' nicht gefunden.</error>');
             return self::FAILURE;
@@ -103,17 +107,17 @@ class ArticleKeyCommand extends rex_console_command
     }
 
     /** Finds a BackedEnum case across all registered enums. Reports error if not found or ambiguous. */
-    private function resolveCase(string $keyValue, OutputInterface $output): ?\BackedEnum
+    private function resolveCase(string $keyValue, OutputInterface $output): ?BackedEnum
     {
         $found = [];
         foreach (ArticleKeyRegistry::all() as $enumClass => $namespace) {
             $case = $enumClass::tryFrom($keyValue);
-            if ($case !== null) {
+            if (null !== $case) {
                 $found[] = ['case' => $case, 'namespace' => $namespace];
             }
         }
 
-        if (count($found) === 0) {
+        if (0 === count($found)) {
             $all = [];
             foreach (ArticleKeyRegistry::all() as $enumClass => $namespace) {
                 foreach ($enumClass::cases() as $c) {

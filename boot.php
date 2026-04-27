@@ -6,8 +6,8 @@ use Yakamara\Roadie\ArticleUsage\ArticleSliceUsageChecker;
 use Yakamara\Roadie\ArticleUsage\ArticleUsageChecker;
 use Yakamara\Roadie\ArticleUsage\MetaInfoUsageChecker;
 use Yakamara\Roadie\Component\Template;
-use Yakamara\Roadie\Section\Section;
 use Yakamara\Roadie\MediaPool\MediaExtension;
+use Yakamara\Roadie\Section\Section;
 
 // use Yakamara\Roadie\View\Notification;
 // use Yakamara\Roadie\View\Section;
@@ -69,8 +69,6 @@ Template::addDirectory($addon->getPath('lib/Component/Tooltip/templates'));
 Template::addDirectory($addon->getPath('lib/Component/Tree/templates'));
 Template::addDirectory($addon->getPath('lib/Component/ZoomableFrame/templates'));
 
-
-
 if (rex::isBackend() && rex::getUser()) {
     ArticleUsageChecker::addChecker(ArticleSliceUsageChecker::check(...));
     ArticleUsageChecker::addChecker(MetaInfoUsageChecker::check(...));
@@ -97,11 +95,11 @@ rex_yform::addTemplatePath($addon->getPath('ytemplates'));
 if (!rex::isBackend()) {
     rex_extension::register('ROADIE_SECTION_REPLACE_PLACEHOLDER', Section::replace(...));
 
-//    rex_extension::register('YREWRITE_SEO_TAGS', static function(rex_extension_point $ep) {
-//        $subject = $ep->getSubject();
-//        $subject[] = LowQualityImagePlaceholder::renderPreloads();
-//        $ep->setSubject($subject);
-//    });
+    //    rex_extension::register('YREWRITE_SEO_TAGS', static function(rex_extension_point $ep) {
+    //        $subject = $ep->getSubject();
+    //        $subject[] = LowQualityImagePlaceholder::renderPreloads();
+    //        $ep->setSubject($subject);
+    //    });
 }
 /*
 if (rex::isBackend() && is_object(rex::getUser())) {

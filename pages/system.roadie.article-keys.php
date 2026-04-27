@@ -14,16 +14,16 @@ $unconfigured = 0;
 foreach ($registry as $enumClass => $namespace) {
     foreach ($enumClass::cases() as $key) {
         if (!rex_config::get($namespace, 'article.' . $key->value)) {
-            $unconfigured++;
+            ++$unconfigured;
         }
     }
 }
 
 if ($unconfigured) {
     echo rex_view::warning(
-        $unconfigured === 1
+        1 === $unconfigured
             ? '1 Artikel-Key ist noch nicht konfiguriert.'
-            : $unconfigured . ' Artikel-Keys sind noch nicht konfiguriert.'
+            : $unconfigured . ' Artikel-Keys sind noch nicht konfiguriert.',
     );
 }
 
@@ -40,7 +40,7 @@ foreach ($registry as $enumClass => $namespace) {
         $article = $id ? rex_article::get($id) : null;
         $field->setNotice($article
             ? '<i class="rex-icon rex-icon-check text-success"></i> ' . rex_escape($article->getName())
-            : '<i class="rex-icon rex-icon-warning text-warning"></i> Nicht konfiguriert'
+            : '<i class="rex-icon rex-icon-warning text-warning"></i> Nicht konfiguriert',
         );
     }
 

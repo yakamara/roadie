@@ -2,6 +2,8 @@
 
 namespace Yakamara\Roadie\Article;
 
+use BackedEnum;
+
 /**
  * Registry für Artikel-Key-Enums.
  *
@@ -13,11 +15,11 @@ namespace Yakamara\Roadie\Article;
  */
 class ArticleKeyRegistry
 {
-    /** @var array<class-string<\BackedEnum>, string> enum class => config namespace */
+    /** @var array<class-string<BackedEnum>, string> enum class => config namespace */
     private static array $registry = [];
 
     /**
-     * @param class-string<\BackedEnum> $enumClass
+     * @param class-string<BackedEnum> $enumClass
      */
     public static function register(string $enumClass, string $namespace): void
     {
@@ -25,7 +27,7 @@ class ArticleKeyRegistry
     }
 
     /**
-     * @return array<class-string<\BackedEnum>, string>
+     * @return array<class-string<BackedEnum>, string>
      */
     public static function all(): array
     {
@@ -33,7 +35,7 @@ class ArticleKeyRegistry
     }
 
     /**
-     * @param class-string<\BackedEnum> $enumClass
+     * @param class-string<BackedEnum> $enumClass
      */
     public static function getNamespace(string $enumClass): ?string
     {

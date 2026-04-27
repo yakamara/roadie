@@ -261,7 +261,7 @@ final class Image extends Component
         }
 
         foreach ($motifs as $motif) {
-            $motifResolutions = match(true) {
+            $motifResolutions = match (true) {
                 $motif->resolutions instanceof ImageResolution => ImageResolutionValues::getValue($motif->resolutions),
                 is_array($motif->resolutions) => $motif->resolutions,
                 default => $resolutions,

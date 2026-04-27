@@ -11,8 +11,8 @@ enum SectionVariant: string
     public function getLabel(): string
     {
         return match ($this) {
-            self::Plain   => 'Standard',
-            self::Brand   => 'Markenfarbe',
+            self::Plain => 'Standard',
+            self::Brand => 'Markenfarbe',
             self::Neutral => 'Neutral',
         };
     }
