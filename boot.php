@@ -92,6 +92,10 @@ if (rex_addon::get('media_manager')->isAvailable()) {
 
 rex_yform::addTemplatePath($addon->getPath('ytemplates'));
 
+//rex_extension::register('YFORM_INIT', static function (rex_extension_point $ep) {
+//    $ep->getSubject()->objparams['form_ytemplate'] = 'roadie,bootstrap,classic';
+//});
+
 if (!rex::isBackend()) {
     rex_extension::register('ROADIE_SECTION_REPLACE_PLACEHOLDER', Section::replace(...));
 
