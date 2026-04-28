@@ -14,6 +14,9 @@
 - [ArticleKey](#articlekey)
 - [ArticleUsage – Löschschutz](#articleusage--löschschutz)
 - [Backend-Widgets](#backend-widgets)
+  - [IconPicker](#iconpicker)
+  - [ColorPicker](#colorpicker)
+  - [LayoutPicker](#layoutpicker)
 - [Console Commands](#console-commands)
 - [Utilities](#utilities)
 
@@ -565,6 +568,7 @@ $icon   = IconRegistry::get($parsed['library'], $parsed['name']);
 
 Ermöglicht die Auswahl einer vordefinierten Farbe als Key (kein Hex-Wert).
 
+
 ```php
 use Yakamara\Roadie\Widget\ColorPicker;
 
@@ -588,6 +592,78 @@ ColorPicker::registerGroup('brand', 'Markenfarben', [
 $colorKey = ColorPicker::validate('REX_VALUE[2]');
 $style = $colorKey !== '' ? 'style="--section-color: var(--color-' . $colorKey . ')"' : '';
 ```
+
+### LayoutPicker
+
+Ermöglicht die visuelle Auswahl eines Layouts anhand von SVG-Vorschauen. Rendert eine `wa-radio-group` mit je einem `wa-radio appearance="button"` pro Option.
+
+```php
+use Yakamara\Roadie\Widget\LayoutPicker\LayoutPicker;
+use Yakamara\Roadie\Widget\LayoutPicker\LayoutPickerOption;
+
+echo new LayoutPicker(
+    options: [
+        new LayoutPickerOption(
+            svg: file_get_contents(rex_path::base('assets/layout/1col.svg')),
+            value: '1col',
+            label: '1-spaltig',
+        ),
+        new LayoutPickerOption(
+            svg: file_get_contents(rex_path::base('assets/layout/2col.svg')),
+            value: '2col',
+            label: '2-spaltig',
+        ),
+    ],
+    name: 'REX_INPUT_VALUE[3]',
+    value: 'REX_VALUE[3]',
+);
+```
+
+**Gespeicherter Wert:** Der `value`-String der gewählten Option (z.B. `2col`).
+
+**SVG-Helfer:**
+
+`LayoutPickerSvg::build()` generiert SVG-Vorschauen auf Basis eines 12-Spalten-Rasters. Das SVG ist immer 100 Einheiten breit, die Höhe ist variabel. Spalten und Blöcke verwenden `currentColor` und passen sich damit automatisch ans CSS-Farbschema an.
+
+```php
+use Yakamara\Roadie\Widget\LayoutPicker\LayoutPickerSvgBlock;
+use Yakamara\Roadie\Widget\LayoutPicker\LayoutPickerSvg;
+
+// Vollbreite
+LayoutPickerSvg::build([
+    new LayoutPickerSvgBlock(col: 1, span: 12),
+]);
+
+// Zwei gleiche Spalten
+LayoutPickerSvg::build([
+    new LayoutPickerSvgBlock(col: 1, span: 6),
+    new LayoutPickerSvgBlock(col: 7, span: 6),
+]);
+
+// Sidebar-Layout mit Header, größere Höhe
+LayoutPickerSvg::build([
+    new LayoutPickerSvgBlock(col: 1, span: 12, height: 0.2),
+    new LayoutPickerSvgBlock(col: 1, span: 3,  height: 0.8, y: 0.2),
+    new LayoutPickerSvgBlock(col: 4, span: 9,  height: 0.8, y: 0.2),
+], height: 48);
+```
+
+`LayoutPickerSvgBlock`-Parameter:
+
+| Parameter | Typ | Bedeutung |
+|---|---|---|
+| `col` | `int` | Startspalte, 1-basiert (1–12) |
+| `span` | `int` | Spaltenbreite (1–12) |
+| `height` | `float` | Höhe als Anteil der verfügbaren Höhe (0.0–1.0), Standard `1.0` |
+| `y` | `float` | Vertikaler Versatz als Anteil (0.0–1.0), Standard `0.0` |
+
+**Moduloutput:**
+
+```php
+$layout = 'REX_VALUE[3]' ?: '1col';
+```
+
+**Styling:** Über `.layout-picker`, `.layout-picker--option` und `.layout-picker--label`. SVG-Größe z.B. via `.layout-picker wa-radio svg { width: 4rem; height: auto; }`.
 
 ---
 

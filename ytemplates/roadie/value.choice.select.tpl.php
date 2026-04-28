@@ -26,7 +26,7 @@ $selectedValues = (array) $this->getValue();
 $isMultiple = $choiceList->isMultiple();
 
 // Component::slot() calls rex_escape() on strings, so pre-decode any existing HTML entities
-$decode = static fn(string $s): string => html_entity_decode($s, ENT_QUOTES | ENT_HTML5, 'UTF-8');
+$decode = static fn (string $s): string => html_entity_decode($s, ENT_QUOTES | ENT_HTML5, 'UTF-8');
 
 $buildOptions = static function (array $choices) use ($selectedValues, $decode): array {
     $options = [];

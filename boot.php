@@ -68,6 +68,7 @@ Template::addDirectory($addon->getPath('lib/Component/Textarea/templates'));
 Template::addDirectory($addon->getPath('lib/Component/Tooltip/templates'));
 Template::addDirectory($addon->getPath('lib/Component/Tree/templates'));
 Template::addDirectory($addon->getPath('lib/Component/ZoomableFrame/templates'));
+Template::addDirectory($addon->getPath('lib/Widget/LayoutPicker/templates'));
 
 if (rex::isBackend() && rex::getUser()) {
     ArticleUsageChecker::addChecker(ArticleSliceUsageChecker::check(...));
@@ -92,9 +93,9 @@ if (rex_addon::get('media_manager')->isAvailable()) {
 
 rex_yform::addTemplatePath($addon->getPath('ytemplates'));
 
-//rex_extension::register('YFORM_INIT', static function (rex_extension_point $ep) {
+// rex_extension::register('YFORM_INIT', static function (rex_extension_point $ep) {
 //    $ep->getSubject()->objparams['form_ytemplate'] = 'roadie,bootstrap,classic';
-//});
+// });
 
 if (!rex::isBackend()) {
     rex_extension::register('ROADIE_SECTION_REPLACE_PLACEHOLDER', Section::replace(...));

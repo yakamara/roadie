@@ -29,7 +29,7 @@ $fieldLabel = $this->getLabel() ?: null;
 $allChoices = [...$choiceListView->getPreferredChoices(), ...$choiceListView->getChoices()];
 
 // Component::slot() calls rex_escape() on strings, so pre-decode any existing HTML entities
-$decode = static fn(string $s): string => html_entity_decode($s, ENT_QUOTES | ENT_HTML5, 'UTF-8');
+$decode = static fn (string $s): string => html_entity_decode($s, ENT_QUOTES | ENT_HTML5, 'UTF-8');
 
 if ($choiceList->isMultiple()) {
     $renderChoice = static function (rex_yform_choice_view $view) use ($selectedValues, $fieldName, $decode): string {
