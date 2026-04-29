@@ -15,12 +15,12 @@ class MediaExtension
 {
     public static function extendForm(rex_extension_point $ep): string
     {
-        /** @var rex_sql $media */
+        /** @var rex_sql|rex_media|null $media */
         $media = $ep->getParam('media');
         $clangs = rex_clang::getAll();
-        $isDecorative = (bool) $media->getValue('med_is_decorative');
+        $isDecorative = $media !== null && (bool) $media->getValue('med_is_decorative');
 
-        $missingAlt = !$isDecorative && self::hasMissingAlt($media, $clangs);
+        $missingAlt = !$isDecorative && $media !== null && self::hasMissingAlt($media, $clangs);
 
         $html = '
             <wa-switch name="med_is_decorative" value="1"' . ($isDecorative ? ' checked' : '') . '>
@@ -41,8 +41,8 @@ class MediaExtension
                 $tabPanels[] = '
                     <wa-tab-panel name="' . $tabId . '">
                         <div class="wa-stack">
-                            <wa-input label="Alternativtext" name="med_alt' . $suffix . '" value="' . rex_escape((string) ($media->getValue('med_alt' . $suffix) ?: '')) . '"></wa-input>
-                            <wa-textarea label="Bildunterschrift" name="med_caption' . $suffix . '" value="' . rex_escape((string) ($media->getValue('med_caption' . $suffix) ?: '')) . '"></wa-textarea>
+                            <wa-input label="Alternativtext" name="med_alt' . $suffix . '" value="' . rex_escape((string) ($media?->getValue('med_alt' . $suffix) ?: '')) . '"></wa-input>
+                            <wa-textarea label="Bildunterschrift" name="med_caption' . $suffix . '" value="' . rex_escape((string) ($media?->getValue('med_caption' . $suffix) ?: '')) . '"></wa-textarea>
                         </div>
                     </wa-tab-panel>';
             }
@@ -53,8 +53,8 @@ class MediaExtension
 
             $html .=
                 '<div class="wa-stack">
-                    <wa-input label="Alternativtext" name="med_alt' . $suffix . '" value="' . rex_escape((string) ($media->getValue('med_alt' . $suffix) ?: '')) . '"></wa-input>
-                    <wa-textarea label="Bildunterschrift" name="med_caption' . $suffix . '" value="' . rex_escape((string) ($media->getValue('med_caption' . $suffix) ?: '')) . '"></wa-textarea>
+                    <wa-input label="Alternativtext" name="med_alt' . $suffix . '" value="' . rex_escape((string) ($media?->getValue('med_alt' . $suffix) ?: '')) . '"></wa-input>
+                    <wa-textarea label="Bildunterschrift" name="med_caption' . $suffix . '" value="' . rex_escape((string) ($media?->getValue('med_caption' . $suffix) ?: '')) . '"></wa-textarea>
                 </div>';
         }
 
@@ -71,7 +71,7 @@ class MediaExtension
                 <dt><label>Copyright</label></dt>
                 <dd>
                     <div class="wa-stack">
-                        <wa-input name="med_copyright" value="' . rex_escape((string) ($media->getValue('med_copyright') ?: '')) . '"></wa-input>
+                        <wa-input name="med_copyright" value="' . rex_escape((string) ($media?->getValue('med_copyright') ?: '')) . '"></wa-input>
                     </div>
                 </dd>
             </dl>

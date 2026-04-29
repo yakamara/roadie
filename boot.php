@@ -81,6 +81,7 @@ if (rex::isBackend() && rex::getUser()) {
 }
 
 if (rex::isBackend() && rex::getUser()) {
+    rex_extension::register('MEDIA_FORM_ADD', MediaExtension::extendForm(...));
     rex_extension::register('MEDIA_FORM_EDIT', MediaExtension::extendForm(...));
     rex_extension::register('MEDIA_LIST_THUMBNAIL', MediaExtension::extendListThumbnail(...));
     rex_extension::register('MEDIA_UPDATED', MediaExtension::saveOnUpdate(...));
